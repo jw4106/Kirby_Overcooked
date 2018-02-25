@@ -1,45 +1,118 @@
-function setup() {
+
+//174*156 (initially)
+
+//player sprite!!!
+let blobSprite;
+
+//player object
+let player;
+
+function preload()
+{
+  assetDelivery();
+  soundDelivery();
+}
+
+function assetDelivery()
+{
+  blobSprite = loadImage("assets/blob.jpg");
+}
+
+function soundDelivery()
+{
+  console.log("loaded sounds");
+}
+
+function setup()
+{
   // set the background size of our canvas
-  createCanvas(1200, 600);
-
+  createCanvas(960, 640);
+  player = new Blob();
   // white background
+  //background(255);
+}
+
+
+
+function draw()
+{
   background(255);
+  player.display();
+  player.move();
+}
 
-  // blue rectangle
-  fill(0, 0, 255);
-  rect(0,0,1200,120);
+class Blob
+{
+  constructor()
+  {
+    this.xPos = 250;
+    this.yPos = 250;
+    this.sprite = blobSprite;
+    this.xSpeed = 5;
+    this.ySpeed = 5;
+  }
+  display()
+  {
+    image(this.sprite, this.xPos, this.yPos);
+  }
+  move()
+  {
+    this.containMe();
+    this.keyboardLogic();
+  }
+  //the logic to contain the player within the world.
+  //can be modified if we want different gameplay.
+  //this is temporary but iterable
+  containMe()
+  {
+    //contain logic within borders
+    if (this.xPos + this.sprite.width > width)
+    {
+      this.xPos = width - this.sprite.width;
+    }
+    if (this.xPos < 0)
+    {
+      this.xPos = 0;
+    }
+    if (this.yPos > height-this.sprite.height)
+    {
+      this.yPos = height - this.sprite.height;
+    }
+    if (this.yPos < 0)
+    {
+      this.yPos = 0;
+    }
+  }
+  keyboardLogic()
+  {
+    // move left? KEY: A
+    if (keyIsDown(LEFT_ARROW) || keyIsDown(65))
+    {
+      // subtract from character's xpos
+      this.xPos -= this.xSpeed;
+      console.log(this.xPos, this.yPos);
+    }
+    // move right? KEY: D
+    if (keyIsDown(RIGHT_ARROW) || keyIsDown(68))
+    {
+      // add to character's pos
+      this.xPos += this.xSpeed;
+      console.log(this.xPos, this.yPos);
+    }
+    //move down? KEY: S
+    if (keyIsDown(DOWN_ARROW) || keyIsDown(83))
+    {
+      // subtract to character's ypos
+      this.yPos += this.ySpeed;
+      console.log(this.xPos, this.yPos);
+    }
+    //move up? KEY: W
+    if (keyIsDown(UP_ARROW) || keyIsDown(87))
+    {
+      // add to character's pos
+      this.yPos -= this.ySpeed;
+      console.log(this.xPos, this.yPos);
+    }
 
-  // white rectangle
-  fill(255);
-  rect(0,120,1200,120);
-
-  // blue rectangle
-  fill(0, 0, 255);
-  rect(0,240,1200,120);
-
-  // white rectangle
-  fill(255);
-  rect(0,360,1200,120);
-
-  // blue rectangle
-  fill(0, 0, 255);
-  rect(0,480,1200,120);
-
-  // red triangle
-  fill(255, 0, 0);
-  triangle(0,0,0,600,400,300);
-
-  // sketchy star -> center of star will be (150, 275)
-  fill (255);
-  noStroke();
-  rect(150,275, 50, 50);
-
-  // triangle parts of the "star"
-  triangle(150,275,175,225,200,275);
-
-  triangle(150,275,100,300,150,325);
-
-  triangle(150,325,175,375,200,325);
-
-  triangle(200,325,250,300,200,275);
+  }
 }
