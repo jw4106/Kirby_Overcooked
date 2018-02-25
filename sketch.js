@@ -43,6 +43,7 @@ function draw()
 
 class Blob
 {
+  //build me a blob
   constructor()
   {
     this.xPos = 250;
@@ -51,10 +52,13 @@ class Blob
     this.xSpeed = 5;
     this.ySpeed = 5;
   }
+  //show me a blob
   display()
   {
     image(this.sprite, this.xPos, this.yPos);
   }
+  //move the blob.
+  //calls containMe and keyboardLogic
   move()
   {
     this.containMe();
@@ -83,6 +87,8 @@ class Blob
       this.yPos = 0;
     }
   }
+
+  //logic with WASD and arrow key controls
   keyboardLogic()
   {
     // move left? KEY: A
