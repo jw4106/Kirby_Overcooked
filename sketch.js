@@ -1,4 +1,4 @@
-var fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,stove;
+var fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,stove, map;
 var kirby;
 
 function preload(){
@@ -8,6 +8,7 @@ function preload(){
 	kirby_stop = loadImage("assets/kirbystop.png");
 	kirby_move_left = loadGif("assets/kirbymoveleft.gif");
 	kirby_stop_left = loadImage("assets/kirbystopleft.png");
+	map = loadImage("assets/map.jpg");
 }
 
 class Kirby{
@@ -88,7 +89,7 @@ function setup(){
 }
 
 function draw(){
-	background(128);
+	background(map);
 	kirby.display();
 	kirby.move();
 }
