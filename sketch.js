@@ -1,4 +1,4 @@
-var fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,stove, map;
+var fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,stove,pan,knife,map;
 var kirby;
 
 function preload(){
@@ -9,6 +9,23 @@ function preload(){
 	kirby_move_left = loadGif("assets/kirbymoveleft.gif");
 	kirby_stop_left = loadImage("assets/kirbystopleft.png");
 	map = loadImage("assets/map.jpg");
+    
+    
+    fridge = loadImage("assets/fridge.png");
+    burger = loadGif("assets/burger.gif");
+    meat = loadImage("assets/meat.png");
+    table = loadImage("assets/table.png");
+    stove = loadImage("assets/stove.png");
+    tomato = loadImage("assets/tomato.png");
+    cabbage = loadImage("assets/veg.png");
+    pan = loadImage("assets/pan.png");
+    knife = loadImage("assets/knife.png");
+    
+    
+    
+    
+    
+    
 }
 
 class Kirby{
