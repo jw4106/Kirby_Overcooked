@@ -88,7 +88,8 @@ function setup(){
 	kirby = new Kirby();
 }
 
-function draw(){
+function draw()
+{
 	background(map);
 	kirby.display();
 	kirby.move();
