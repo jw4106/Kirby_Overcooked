@@ -135,6 +135,14 @@ class Kirby
 	}
 }
 
+class Interactive
+{
+	constructor()
+	{
+
+	}
+}
+
 function setup()
 {
 	createCanvas(800,600);
