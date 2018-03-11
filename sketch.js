@@ -9,26 +9,25 @@ function preload(){
 	kirby_move_left = loadGif("assets/kirbymoveleft.gif");
 	kirby_stop_left = loadImage("assets/kirbystopleft.png");
 	map = loadImage("assets/map.jpg");
-    
-    
-    fridge = loadImage("assets/fridge.png");
-    burger = loadGif("assets/burger.gif");
-    meat = loadImage("assets/meat.png");
-    table = loadImage("assets/table.png");
-    stove = loadImage("assets/stove.png");
-    tomato = loadImage("assets/tomato.png");
-    cabbage = loadImage("assets/veg.png");
-    pan = loadImage("assets/pan.png");
-    knife = loadImage("assets/knife.png");
-    
-    
-    
-    
-    
-    
+  fridge = loadImage("assets/fridge.png");
+  burger = loadGif("assets/burger.gif");
+  meat = loadImage("assets/meat.png");
+  table = loadImage("assets/table.png");
+  stove = loadImage("assets/stove.png");
+  tomato = loadImage("assets/tomato.png");
+  cabbage = loadImage("assets/veg.png");
+  pan = loadImage("assets/pan.png");
+  knife = loadImage("assets/knife.png");
+
+
+
+
+
+
 }
 
-class Kirby{
+class Kirby
+{
 	constructor()
 	{
 		this.xPos = 400;
@@ -37,48 +36,85 @@ class Kirby{
 	}
 	move()
 	{
+		//left, shift
 		if (keyIsDown(65) && keyIsDown(16) && this.xPos > 0)
 		{
 			this.xPos -= 4;
 			this.state = kirby_run_left;
 		}
-		else if (keyIsDown(65) && this.xPos > 0 )
+		//left basic
+		else if (keyIsDown(65) && this.xPos > 0)
 		{
 			this.xPos -= 2;
 			this.state = kirby_move_left;
 		}
-
+		//right and shift
 		if (keyIsDown(68) && keyIsDown(16) && this.xPos < 750)
 		{
 			this.xPos += 4;
 			this.state = kirby_run;
 		}
+		//right
 		else if (keyIsDown(68) && this.xPos < 750)
 		{
 			this.xPos += 2;
 			this.state = kirby_move;
 		}
-
+		//up and shift
 		if (keyIsDown(87) && keyIsDown(16) && this.yPos > 0)
 		{
-			this.yPos -= 4;
-			this.state = kirby_run;
+			if (keyIsDown(65))
+			{
+				this.yPos -=4;
+				this.state = kirby_run_left;
+			}
+			else
+			{
+				this.yPos -= 4;
+				this.state = kirby_run;
+			}
 		}
+		//up
 		else if (keyIsDown(87) && this.yPos > 0)
 		{
-			this.yPos -= 2;
-			this.state = kirby_move;
+			if (keyIsDown(65))
+			{
+				this.yPos -=2;
+				this.state = kirby_move_left;
+			}
+			else
+			{
+				this.yPos -= 2;
+				this.state = kirby_move;
+			}
 		}
-
+		//down and shift
 		if (keyIsDown(83) && keyIsDown(16) && this.yPos < 550)
 		{
-			this.yPos += 4;
-			this.state = kirby_run;
+			if (keyIsDown(65))
+			{
+				this.yPos +=4;
+				this.state = kirby_run_left;
+			}
+			else
+			{
+				this.yPos += 4;
+				this.state = kirby_run;
+			}
 		}
+		//down
 		else if (keyIsDown(83) && this.yPos < 550)
 		{
-			this.yPos += 2;
-			this.state = kirby_move;
+			if (keyIsDown(65))
+			{
+				this.yPos += 2;
+				this.state = kirby_move_left
+			}
+			else
+			{
+				this.yPos += 2;
+				this.state = kirby_move;
+			}
 		}
 
 		if (!keyIsDown(65) && !keyIsDown(68) && !keyIsDown(87) && !keyIsDown(83))
@@ -99,9 +135,9 @@ class Kirby{
 	}
 }
 
-function setup(){
+function setup()
+{
 	createCanvas(800,600);
-	background(128);
 	kirby = new Kirby();
 }
 
