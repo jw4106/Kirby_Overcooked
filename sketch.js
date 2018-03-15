@@ -154,19 +154,35 @@ class Interactive
 		let kirbyTop    = kirby.yPos;
 		let kirbyBottom = kirby.yPos + kirby_stop.height;
 
+
+		console.log("spriteRight:" + spriteRight);
+		console.log("spriteLeft:" + spriteLeft);
+		console.log("spriteBottom:" + spriteBottom);
+		console.log("spriteTop:" + spriteTop);
+
+		console.log("kirbyRight:" + kirbyRight);
+		console.log("kirbyLeft:" + kirbyLeft);
+		console.log("kirbyBottom:" + kirbyBottom);
+		console.log("kirbyTop:" + kirbyTop);
+
 		if (spriteRight < kirbyLeft || spriteLeft > kirbyRight || spriteBottom < kirbyTop || spriteTop > kirbyBottom)
 		{
 			text("NO COLLISION", 20, 20);
 		}
 		else
 		{
+			/*					spriteRight:557 		kirbyLeft:400
+		sketch.js:158 spriteLeft:400 		kirbyRight:865
+		sketch.js:159 spriteBottom:422 		kirbyTop:300
+		sketch.js:160 spriteTop:300 		kirbyBottom:725
+*/
 			text("COLLISION", 20, 20);
 		}
 
 	}
 	display()
 	{
-		image(this.state, this.xPos, this.yPos);
+		image(this.sprite, this.x, this.y);
 	}
 }
 
@@ -174,7 +190,7 @@ function setup()
 {
 	createCanvas(800,600);
 	kirby = new Kirby();
-	fridgeObj = new Interactive(fridge,100,100);
+	fridgeObj = new Interactive(table,width/2,height/2);
 }
 
 function draw()
