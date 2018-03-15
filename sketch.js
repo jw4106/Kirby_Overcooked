@@ -1,7 +1,7 @@
 let fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,pan,knife,map;
 let kirby;
 
-let fridgeObj;
+let fridgeObj, stoveObj, tableObj;
 function preload()
 {
 	kirby_run = loadGif("assets/kirbyrun.gif");
@@ -14,7 +14,7 @@ function preload()
   fridge = loadImage("assets/fridge.png");
   burger = loadGif("assets/burger.gif");
   meat = loadImage("assets/meat.png");
-  table = loadImage("assets/table.png");
+  table = loadImage("assets/table.jpg");
   stove = loadImage("assets/stove.png");
   tomato = loadImage("assets/tomato.png");
   cabbage = loadImage("assets/veg.png");
@@ -149,12 +149,12 @@ class Interactive
 		let spriteTop   = this.y;
 		let spriteBottom = this.y + this.sprite.height;
 
-		let kirbyRight = kirby.xPos + kirby_stop.width;
+		let kirbyRight = kirby.xPos + 50;
 		let kirbyLeft  = kirby.xPos;
 		let kirbyTop    = kirby.yPos;
-		let kirbyBottom = kirby.yPos + kirby_stop.height;
+		let kirbyBottom = kirby.yPos + 50;
 
-
+		//debug
 		console.log("spriteRight:" + spriteRight);
 		console.log("spriteLeft:" + spriteLeft);
 		console.log("spriteBottom:" + spriteBottom);
@@ -165,20 +165,44 @@ class Interactive
 		console.log("kirbyBottom:" + kirbyBottom);
 		console.log("kirbyTop:" + kirbyTop);
 
+
+		/*
+
+		sketch.js:158 spriteRight:555
+		sketch.js:159 spriteLeft:400
+		sketch.js:160 spriteBottom:359
+		sketch.js:161 spriteTop:300
+		sketch.js:163 kirbyRight:514
+		sketch.js:164 kirbyLeft:464
+		sketch.js:165 kirbyBottom:406
+		sketch.js:166 kirbyTop:356
+
+
+		*/
+
 		if (spriteRight < kirbyLeft || spriteLeft > kirbyRight || spriteBottom < kirbyTop || spriteTop > kirbyBottom)
 		{
-			text("NO COLLISION", 20, 20);
+			//console.log("chillin");
 		}
 		else
 		{
-			/*					spriteRight:557 		kirbyLeft:400
-		sketch.js:158 spriteLeft:400 		kirbyRight:865
-		sketch.js:159 spriteBottom:422 		kirbyTop:300
-		sketch.js:160 spriteTop:300 		kirbyBottom:725
-*/
-			text("COLLISION", 20, 20);
+			if (abs(kirbyTop - spriteBottom) < 3)
+			{
+				kirby.yPos = spriteBottom + 3;
+			}
+			if (abs(kirbyBottom - spriteTop) < 3)
+			{
+				kirby.yPos = spriteTop - 53;
+			}
+			if (abs(kirbyRight - spriteLeft) < 3)
+			{
+				kirby.xPos = spriteLeft - 53;
+			}
+			if (abs(kirbyLeft - spriteRight) < 3)
+			{
+				kirby.xPos = spriteRight + 3;
+			}
 		}
-
 	}
 	display()
 	{
@@ -190,7 +214,10 @@ function setup()
 {
 	createCanvas(800,600);
 	kirby = new Kirby();
-	fridgeObj = new Interactive(table,width/2,height/2);
+	fridgeObj = new Interactive(fridge,500,10);
+	tableObj = new Interactive(table, 500, 400);
+	stoveObj = new Interactive(stove,400,10);
+
 }
 
 function draw()
@@ -200,4 +227,8 @@ function draw()
 	kirby.move();
 	fridgeObj.display();
 	fridgeObj.check(kirby);
+	tableObj.display();
+	tableObj.check(kirby);
+	stoveObj.display();
+	stoveObj.check(kirby);
 }
