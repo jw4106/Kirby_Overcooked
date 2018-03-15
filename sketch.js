@@ -1,7 +1,9 @@
-var fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,stove,pan,knife,map;
-var kirby;
+let fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,pan,knife,map;
+let kirby;
 
-function preload(){
+let fridgeObj;
+function preload()
+{
 	kirby_run = loadGif("assets/kirbyrun.gif");
 	kirby_run_left = loadGif("assets/kirbyrunleft.gif");
 	kirby_move = loadGif("assets/kirbymove.gif");
@@ -18,12 +20,6 @@ function preload(){
   cabbage = loadImage("assets/veg.png");
   pan = loadImage("assets/pan.png");
   knife = loadImage("assets/knife.png");
-
-
-
-
-
-
 }
 
 class Kirby
@@ -137,9 +133,40 @@ class Kirby
 
 class Interactive
 {
-	constructor()
+	constructor(sprite, x, y)
 	{
+		this.sprite = sprite;
+		this.x = x;
+		this.y = y;
+	}
+	//kapp collision
+	check(kirby)
+	{
+		//checks the right side
+		let spriteRight = this.x + this.sprite.width;
+		//left, etc. for sprite and kirby
+		let spriteLeft  = this.x;
+		let spriteTop   = this.y;
+		let spriteBottom = this.y + this.sprite.height;
 
+		let kirbyRight = kirby.xPos + kirby_stop.width;
+		let kirbyLeft  = kirby.xPos;
+		let kirbyTop    = kirby.yPos;
+		let kirbyBottom = kirby.yPos + kirby_stop.height;
+
+		if (spriteRight < kirbyLeft || spriteLeft > kirbyRight || spriteBottom < kirbyTop || spriteTop > kirbyBottom)
+		{
+			text("NO COLLISION", 20, 20);
+		}
+		else
+		{
+			text("COLLISION", 20, 20);
+		}
+
+	}
+	display()
+	{
+		image(this.state, this.xPos, this.yPos);
 	}
 }
 
@@ -147,6 +174,7 @@ function setup()
 {
 	createCanvas(800,600);
 	kirby = new Kirby();
+	fridgeObj = new Interactive(fridge,100,100);
 }
 
 function draw()
@@ -154,4 +182,6 @@ function draw()
 	background(map);
 	kirby.display();
 	kirby.move();
+	fridgeObj.display();
+	fridgeObj.check(kirby);
 }
