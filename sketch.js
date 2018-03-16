@@ -20,6 +20,7 @@ function preload()
   cabbage = loadImage("assets/veg.png");
   pan = loadImage("assets/pan.png");
   knife = loadImage("assets/knife.png");
+  sink = loadImage("assets/sink.png");
 }
 
 class Kirby
@@ -254,6 +255,8 @@ function setup()
 	fridgeObj = new Interactive(fridge,500,10, false, null);
 	tableObj = new Interactive(table, 500, 400, true, meat);
 	stoveObj = new Interactive(stove,400,10, false, null);
+    sinkObj = new Interactive(sink,250,10, false, null);
+    
 
 }
 
@@ -268,4 +271,6 @@ function draw()
 	tableObj.check(kirby);
 	stoveObj.display();
 	stoveObj.check(kirby);
+    sinkObj.display();
+	sinkObj.check(kirby);
 }
