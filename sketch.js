@@ -138,13 +138,17 @@ class Kirby
 		image(this.state, this.xPos, this.yPos, 50,50);
 		if (this.holding)
 		{
-			image(this.obj, this.xPos, this.yPos - 25, 30, 30);
+			image(this.obj, this.xPos+10, this.yPos - 25, 40, 40);
 		}
 	}
 	pickUp(obj)
 	{
 		this.holding = true;
 		this.obj = obj;
+	}
+	drop(obj){
+		this.holding = false;
+		this.obj = null;
 	}
 }
 
@@ -199,56 +203,45 @@ class Interactive
 			//if the table has an object, you can interact with it
 			if (this.hasObject)
 			{
-				//but if kirby is already holding something, then drop it
-				if (kirby.holding)
+				//if kirby holding nothing
+				if (!kirby.holding)
 				{
-					if (abs(kirbyTop - spriteBottom) < 10 && keyIsDown(16))
-					
-					{
-						kirby.drop(this);
-					}
-					if (abs(kirbyBottom - spriteTop) < 10 && keyIsDown(16))
-					{
-						kirby.drop(this);
-					}
-					if (abs(kirbyRight - spriteLeft) < 10 && keyIsDown(16))
-					{
-						kirby.drop(this);
-					}
-					if (abs(kirbyLeft - spriteRight) < 10 && keyIsDown(16))
-					{
-						kirby.drop(this);
-					}
-				}
-				//if not, pick it up.
-				else
-				{
-					if (abs(kirbyTop - spriteBottom) < 10 && keyIsDown(16))
+					//DO NOTHING
+					//key 32 is spacebar for picking up
+					if (abs(kirbyTop - spriteBottom) < 10 && keyIsDown(32))
 					{
 						kirby.pickUp(this.obj);
 					}
-					if (abs(kirbyBottom - spriteTop) < 10 && keyIsDown(16))
+					if (abs(kirbyBottom - spriteTop) < 10 && keyIsDown(32))
 					{
 						kirby.pickUp(this.obj);
 					}
-					if (abs(kirbyRight - spriteLeft) < 10 && keyIsDown(16))
+					if (abs(kirbyRight - spriteLeft) < 10 && keyIsDown(32))
 					{
 						kirby.pickUp(this.obj);
 					}
-					if (abs(kirbyLeft - spriteRight) < 10 && keyIsDown(16))
+					if (abs(kirbyLeft - spriteRight) < 10 && keyIsDown(32))
 					{
 						kirby.pickUp(this.obj);
 					}
 				}
-			}
+			}			
 		}
 	}
 	display()
 	{
-		image(this.sprite, this.x, this.y);
+		if(this.sprite !== tomato || this.sprite !== cabbage){
+			image(this.sprite, this.x, this.y);
+		}
 		if (this.hasObject)
-		{
-			image(this.obj, this.x, this.y, 30, 30);
+		{	
+			//hard coded the pan to work 
+			if(this.obj === pan){
+				image(this.obj, this.x, this.y+28, 40, 40);
+			}
+			else{
+				image(this.obj, this.x, this.y, 30, 30);	
+			}
 		}
 	}
 }
@@ -272,12 +265,14 @@ function setup()
 	tableObj = new Interactive(table, 500, 400, true, meat);
 	stoveObj = new Interactive(stove,400,10, true, pan);
     sinkObj = new Interactive(sink,250,10, false, null);
-    tomatoObj1 = new Interactive(tomato,25,320,false, null);
-    tomatoObj2 = new Interactive(tomato,80,320,false, null);
-    tomatoObj3 = new Interactive(tomato,80,380,false, null);
-    tomatoObj4 = new Interactive(tomato,25,380,false, null);  
-    
-    
+    tomatoObj1 = new Interactive(tomato,100,320,true, tomato);
+    tomatoObj2 = new Interactive(tomato,155,320,true, tomato);
+    tomatoObj3 = new Interactive(tomato,155,380,true, tomato);
+    tomatoObj4 = new Interactive(tomato,100,380,true, tomato); 
+    cabbageObj1 = new Interactive(cabbage,100,450,true, cabbage);
+    cabbageObj2 = new Interactive(cabbage,155,450,true, cabbage);
+    cabbageObj3 = new Interactive(cabbage,155,510,true, cabbage);
+    cabbageObj4 = new Interactive(cabbage,100,510,true, cabbage);      
     
 //timer count down
 function timeIt () {
@@ -293,7 +288,6 @@ setInterval(timeIt,1000);
 function draw()
 {
 	background(map);
-	kirby.display();
 	kirby.move();
 	fridgeObj.display();
 	fridgeObj.check(kirby);
@@ -312,6 +306,16 @@ function draw()
 	tomatoObj3.check(kirby);
     tomatoObj4.display();
 	tomatoObj4.check(kirby);
+    cabbage.resize(30, 38);
+    cabbageObj1.display();
+	cabbageObj1.check(kirby);
+    cabbageObj2.display();
+	cabbageObj2.check(kirby);
+    cabbageObj3.display();
+	cabbageObj3.check(kirby);
+    cabbageObj4.display();
+	cabbageObj4.check(kirby);	
+	kirby.display();
     
     
     text("Time left: " + convertSeconds(timeleft-counter), 50, 70);
