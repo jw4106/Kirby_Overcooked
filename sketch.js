@@ -14,7 +14,7 @@ function preload()
   fridge = loadImage("assets/fridge.png");
   burger = loadGif("assets/burger.gif");
   meat = loadImage("assets/meat.png");
-  table = loadImage("assets/table.jpg");
+  table = loadImage("assets/table.png");
   stove = loadImage("assets/stove.png");
   tomato = loadImage("assets/tomato.png");
   cabbage = loadImage("assets/veg.png");
