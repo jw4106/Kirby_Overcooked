@@ -2,6 +2,10 @@ let fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,pan,kn
 let kirby;
 
 let fridgeObj, stoveObj, tableObj;
+
+var counter=0;
+var timeleft=90;
+
 function preload()
 {
 	kirby_run = loadGif("assets/kirbyrun.gif");
@@ -249,6 +253,17 @@ class Interactive
 	}
 }
 
+
+
+//Timer: convert seconds to min
+
+function convertSeconds(s) {
+    var min = floor (s/60);
+    var sec = s % 60;
+    return nf(min,2) + ":" + nf(sec,2);
+}
+
+
 function setup()
 {
 	createCanvas(800,600);
@@ -260,7 +275,19 @@ function setup()
     tomatoObj1 = new Interactive(tomato,25,320,false, null);
     tomatoObj2 = new Interactive(tomato,80,320,false, null);
     tomatoObj3 = new Interactive(tomato,80,380,false, null);
-    tomatoObj4 = new Interactive(tomato,25,380,false, null);
+    tomatoObj4 = new Interactive(tomato,25,380,false, null);  
+    
+    
+    
+//timer count down
+function timeIt () {
+    counter ++;
+    
+}
+
+setInterval(timeIt,1000);
+
+    
 }
 
 function draw()
@@ -285,4 +312,10 @@ function draw()
 	tomatoObj3.check(kirby);
     tomatoObj4.display();
 	tomatoObj4.check(kirby);
+    
+    
+    text("Time left: " + convertSeconds(timeleft-counter), 50, 70);
 }
+
+
+
