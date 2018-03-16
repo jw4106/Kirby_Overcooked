@@ -21,6 +21,7 @@ function preload()
   pan = loadImage("assets/pan.png");
   knife = loadImage("assets/knife.png");
   sink = loadImage("assets/sink.png");
+
 }
 
 class Kirby
@@ -254,10 +255,12 @@ function setup()
 	kirby = new Kirby();
 	fridgeObj = new Interactive(fridge,500,10, false, null);
 	tableObj = new Interactive(table, 500, 400, true, meat);
-	stoveObj = new Interactive(stove,400,10, false, null);
+	stoveObj = new Interactive(stove,400,10, true, pan);
     sinkObj = new Interactive(sink,250,10, false, null);
-    
-
+    tomatoObj1 = new Interactive(tomato,25,320,false, null);
+    tomatoObj2 = new Interactive(tomato,80,320,false, null);
+    tomatoObj3 = new Interactive(tomato,80,380,false, null);
+    tomatoObj4 = new Interactive(tomato,25,380,false, null);
 }
 
 function draw()
@@ -273,4 +276,13 @@ function draw()
 	stoveObj.check(kirby);
     sinkObj.display();
 	sinkObj.check(kirby);
+    tomato.resize(30, 38);
+    tomatoObj1.display();
+	tomatoObj1.check(kirby);
+    tomatoObj2.display();
+	tomatoObj2.check(kirby);
+    tomatoObj3.display();
+	tomatoObj3.check(kirby);
+    tomatoObj4.display();
+	tomatoObj4.check(kirby);
 }
