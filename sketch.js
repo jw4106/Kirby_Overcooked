@@ -29,6 +29,8 @@ class Kirby
 		this.xPos = 400;
 		this.yPos = 300;
 		this.state = kirby_stop;
+		this.holding = false;
+		this.obj = null;
 	}
 	move()
 	{
@@ -128,16 +130,27 @@ class Kirby
 	display()
 	{
 		image(this.state, this.xPos, this.yPos, 50,50);
+		if (this.holding)
+		{
+			image(this.obj, this.xPos, this.yPos - 25, 30, 30);
+		}
+	}
+	pickUp(obj)
+	{
+		this.holding = true;
+		this.obj = obj;
 	}
 }
 
 class Interactive
 {
-	constructor(sprite, x, y)
+	constructor(sprite, x, y, hasObject, obj)
 	{
 		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
+		this.hasObject = hasObject;
+		this.obj = obj;
 	}
 	//kapp collision
 	check(kirby)
@@ -154,59 +167,83 @@ class Interactive
 		let kirbyTop    = kirby.yPos;
 		let kirbyBottom = kirby.yPos + 50;
 
-		//debug
-		console.log("spriteRight:" + spriteRight);
-		console.log("spriteLeft:" + spriteLeft);
-		console.log("spriteBottom:" + spriteBottom);
-		console.log("spriteTop:" + spriteTop);
-
-		console.log("kirbyRight:" + kirbyRight);
-		console.log("kirbyLeft:" + kirbyLeft);
-		console.log("kirbyBottom:" + kirbyBottom);
-		console.log("kirbyTop:" + kirbyTop);
-
-
-		/*
-
-		sketch.js:158 spriteRight:555
-		sketch.js:159 spriteLeft:400
-		sketch.js:160 spriteBottom:359
-		sketch.js:161 spriteTop:300
-		sketch.js:163 kirbyRight:514
-		sketch.js:164 kirbyLeft:464
-		sketch.js:165 kirbyBottom:406
-		sketch.js:166 kirbyTop:356
-
-
-		*/
-
 		if (spriteRight < kirbyLeft || spriteLeft > kirbyRight || spriteBottom < kirbyTop || spriteTop > kirbyBottom)
 		{
 			//console.log("chillin");
 		}
 		else
 		{
-			if (abs(kirbyTop - spriteBottom) < 3)
+			if (abs(kirbyTop - spriteBottom) <= 4)
 			{
-				kirby.yPos = spriteBottom + 3;
+				kirby.yPos = spriteBottom;
 			}
-			if (abs(kirbyBottom - spriteTop) < 3)
+			if (abs(kirbyBottom - spriteTop) <= 4)
 			{
-				kirby.yPos = spriteTop - 53;
+				kirby.yPos = spriteTop - 50;
 			}
-			if (abs(kirbyRight - spriteLeft) < 3)
+			if (abs(kirbyRight - spriteLeft) <= 4)
 			{
-				kirby.xPos = spriteLeft - 53;
+				kirby.xPos = spriteLeft - 50;
 			}
-			if (abs(kirbyLeft - spriteRight) < 3)
+			if (abs(kirbyLeft - spriteRight) <= 4)
 			{
-				kirby.xPos = spriteRight + 3;
+				kirby.xPos = spriteRight;
+			}
+
+			//if the table has an object, you can interact with it
+			if (this.hasObject)
+			{
+				//but if kirby is already holding something, then drop it
+				if (kirby.holding)
+				{
+					if (abs(kirbyTop - spriteBottom) < 10 && keyIsDown(16))
+					
+					{
+						kirby.drop(this);
+					}
+					if (abs(kirbyBottom - spriteTop) < 10 && keyIsDown(16))
+					{
+						kirby.drop(this);
+					}
+					if (abs(kirbyRight - spriteLeft) < 10 && keyIsDown(16))
+					{
+						kirby.drop(this);
+					}
+					if (abs(kirbyLeft - spriteRight) < 10 && keyIsDown(16))
+					{
+						kirby.drop(this);
+					}
+				}
+				//if not, pick it up.
+				else
+				{
+					if (abs(kirbyTop - spriteBottom) < 10 && keyIsDown(16))
+					{
+						kirby.pickUp(this.obj);
+					}
+					if (abs(kirbyBottom - spriteTop) < 10 && keyIsDown(16))
+					{
+						kirby.pickUp(this.obj);
+					}
+					if (abs(kirbyRight - spriteLeft) < 10 && keyIsDown(16))
+					{
+						kirby.pickUp(this.obj);
+					}
+					if (abs(kirbyLeft - spriteRight) < 10 && keyIsDown(16))
+					{
+						kirby.pickUp(this.obj);
+					}
+				}
 			}
 		}
 	}
 	display()
 	{
 		image(this.sprite, this.x, this.y);
+		if (this.hasObject)
+		{
+			image(this.obj, this.x, this.y, 30, 30);
+		}
 	}
 }
 
@@ -214,9 +251,9 @@ function setup()
 {
 	createCanvas(800,600);
 	kirby = new Kirby();
-	fridgeObj = new Interactive(fridge,500,10);
-	tableObj = new Interactive(table, 500, 400);
-	stoveObj = new Interactive(stove,400,10);
+	fridgeObj = new Interactive(fridge,500,10, false, null);
+	tableObj = new Interactive(table, 500, 400, true, meat);
+	stoveObj = new Interactive(stove,400,10, false, null);
 
 }
 
