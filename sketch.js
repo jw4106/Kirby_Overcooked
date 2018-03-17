@@ -146,9 +146,15 @@ class Kirby
 		this.holding = true;
 		this.obj = obj;
 	}
-	drop(obj){
+	drop(obj)
+	{
 		this.holding = false;
-		this.obj = null;
+	}
+	place(obj)
+	{
+		//place the object on the table.
+		this.holding = false;
+		return kirby.obj;
 	}
 }
 
@@ -179,7 +185,7 @@ class Interactive
 
 		if (spriteRight < kirbyLeft || spriteLeft > kirbyRight || spriteBottom < kirbyTop || spriteTop > kirbyBottom)
 		{
-			//console.log("chillin");
+
 		}
 		else
 		{
@@ -200,6 +206,15 @@ class Interactive
 				kirby.xPos = spriteRight;
 			}
 
+			//if kirby is holding something, drop it on the object.
+			if (kirby.holding)
+			{
+				if (keyIsDown(81))
+				{
+					this.hasObject = true;
+					this.obj = kirby.place();
+				}
+			}
 			//if the table has an object, you can interact with it
 			if (this.hasObject)
 			{
@@ -211,36 +226,43 @@ class Interactive
 					if (abs(kirbyTop - spriteBottom) < 10 && keyIsDown(32))
 					{
 						kirby.pickUp(this.obj);
+						this.hasObject = false;
 					}
 					if (abs(kirbyBottom - spriteTop) < 10 && keyIsDown(32))
 					{
 						kirby.pickUp(this.obj);
+						this.hasObject = false;
 					}
 					if (abs(kirbyRight - spriteLeft) < 10 && keyIsDown(32))
 					{
 						kirby.pickUp(this.obj);
+						this.hasObject = false;
 					}
 					if (abs(kirbyLeft - spriteRight) < 10 && keyIsDown(32))
 					{
 						kirby.pickUp(this.obj);
+						this.hasObject = false;
 					}
 				}
-			}			
+			}
 		}
 	}
 	display()
 	{
-		if(this.sprite !== tomato || this.sprite !== cabbage){
+		if(this.sprite !== tomato || this.sprite !== cabbage)
+		{
 			image(this.sprite, this.x, this.y);
 		}
 		if (this.hasObject)
-		{	
-			//hard coded the pan to work 
-			if(this.obj === pan){
+		{
+			//hard coded the pan to work
+			if(this.obj === pan)
+			{
 				image(this.obj, this.x, this.y+28, 40, 40);
 			}
-			else{
-				image(this.obj, this.x, this.y, 30, 30);	
+			else
+			{
+				image(this.obj, this.x, this.y, 30, 30);
 			}
 		}
 	}
@@ -250,7 +272,8 @@ class Interactive
 
 //Timer: convert seconds to min
 
-function convertSeconds(s) {
+function convertSeconds(s)
+{
     var min = floor (s/60);
     var sec = s % 60;
     return nf(min,2) + ":" + nf(sec,2);
@@ -264,25 +287,25 @@ function setup()
 	fridgeObj = new Interactive(fridge,500,10, false, null);
 	tableObj = new Interactive(table, 500, 400, true, meat);
 	stoveObj = new Interactive(stove,400,10, true, pan);
-    sinkObj = new Interactive(sink,250,10, false, null);
-    tomatoObj1 = new Interactive(tomato,100,320,true, tomato);
-    tomatoObj2 = new Interactive(tomato,155,320,true, tomato);
-    tomatoObj3 = new Interactive(tomato,155,380,true, tomato);
-    tomatoObj4 = new Interactive(tomato,100,380,true, tomato); 
-    cabbageObj1 = new Interactive(cabbage,100,450,true, cabbage);
-    cabbageObj2 = new Interactive(cabbage,155,450,true, cabbage);
-    cabbageObj3 = new Interactive(cabbage,155,510,true, cabbage);
-    cabbageObj4 = new Interactive(cabbage,100,510,true, cabbage);      
-    
-//timer count down
-function timeIt () {
-    counter ++;
-    
-}
+  sinkObj = new Interactive(sink,250,10, false, null);
+  tomatoObj1 = new Interactive(tomato,100,320,true, tomato);
+  tomatoObj2 = new Interactive(tomato,155,320,true, tomato);
+  tomatoObj3 = new Interactive(tomato,155,380,true, tomato);
+  tomatoObj4 = new Interactive(tomato,100,380,true, tomato);
+  cabbageObj1 = new Interactive(cabbage,100,450,true, cabbage);
+  cabbageObj2 = new Interactive(cabbage,155,450,true, cabbage);
+  cabbageObj3 = new Interactive(cabbage,155,510,true, cabbage);
+  cabbageObj4 = new Interactive(cabbage,100,510,true, cabbage);
 
-setInterval(timeIt,1000);
+	//timer count down
+	function timeIt ()
+	{
+	    counter ++;
 
-    
+	}
+
+	setInterval(timeIt,1000);
+
 }
 
 function draw()
@@ -295,31 +318,26 @@ function draw()
 	tableObj.check(kirby);
 	stoveObj.display();
 	stoveObj.check(kirby);
-    sinkObj.display();
+  sinkObj.display();
 	sinkObj.check(kirby);
-    tomato.resize(30, 38);
-    tomatoObj1.display();
+  tomato.resize(30, 38);
+  tomatoObj1.display();
 	tomatoObj1.check(kirby);
-    tomatoObj2.display();
+  tomatoObj2.display();
 	tomatoObj2.check(kirby);
-    tomatoObj3.display();
+  tomatoObj3.display();
 	tomatoObj3.check(kirby);
-    tomatoObj4.display();
+  tomatoObj4.display();
 	tomatoObj4.check(kirby);
-    cabbage.resize(30, 38);
-    cabbageObj1.display();
+  cabbage.resize(30, 38);
+  cabbageObj1.display();
 	cabbageObj1.check(kirby);
-    cabbageObj2.display();
+  cabbageObj2.display();
 	cabbageObj2.check(kirby);
-    cabbageObj3.display();
+  cabbageObj3.display();
 	cabbageObj3.check(kirby);
-    cabbageObj4.display();
-	cabbageObj4.check(kirby);	
+  cabbageObj4.display();
+	cabbageObj4.check(kirby);
 	kirby.display();
-    
-    
-    text("Time left: " + convertSeconds(timeleft-counter), 50, 70);
+  text("Time left: " + convertSeconds(timeleft-counter), 50, 70);
 }
-
-
-
