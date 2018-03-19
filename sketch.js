@@ -249,10 +249,7 @@ class Interactive
 	}
 	display()
 	{
-		if(this.sprite !== tomato || this.sprite !== cabbage)
-		{
-			image(this.sprite, this.x, this.y);
-		}
+		image(this.sprite, this.x, this.y);
 		if (this.hasObject)
 		{
 			//hard coded the pan to work
@@ -284,10 +281,10 @@ function setup()
 {
 	createCanvas(800,600);
 	kirby = new Kirby();
-	fridgeObj = new Interactive(fridge,500,10, false, null);
-	tableObj = new Interactive(table, 500, 400, true, meat);
-	stoveObj = new Interactive(stove,400,10, true, pan);
-  sinkObj = new Interactive(sink,250,10, false, null);
+	fridgeObj = new Interactive(fridge,500,50, false, null);
+	tableObj = new Interactive(table, 500, 450, true, meat);
+	stoveObj = new Interactive(stove,400,50, true, pan);
+  sinkObj = new Interactive(sink,250,50, false, null);
   tomatoObj1 = new Interactive(tomato,100,320,true, tomato);
   tomatoObj2 = new Interactive(tomato,155,320,true, tomato);
   tomatoObj3 = new Interactive(tomato,155,380,true, tomato);
@@ -300,8 +297,7 @@ function setup()
 	//timer count down
 	function timeIt ()
 	{
-	    counter ++;
-
+	  counter ++;
 	}
 
 	setInterval(timeIt,1000);
