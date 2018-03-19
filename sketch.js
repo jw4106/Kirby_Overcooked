@@ -172,12 +172,19 @@ class Interactive
 	check(kirby)
 	{
 		//checks the right side
-		let spriteRight = this.x + this.sprite.width;
 		//left, etc. for sprite and kirby
-		let spriteLeft  = this.x;
 		let spriteTop   = this.y;
-		let spriteBottom = this.y + this.sprite.height;
-
+		let spriteBottom, spriteLeft, spriteRight;
+		if(this.sprite === stove || this.sprite === fridge || this.sprite === sink){
+			spriteBottom = this.y + this.sprite.height - 40;
+			spriteLeft = 0;
+			spriteRight = 800;
+		}
+		else{
+		    spriteLeft  = this.x;
+		    spriteRight = this.x + this.sprite.width;
+			spriteBottom = this.y + this.sprite.height;
+		}
 		let kirbyRight = kirby.xPos + 50;
 		let kirbyLeft  = kirby.xPos;
 		let kirbyTop    = kirby.yPos;
@@ -280,10 +287,10 @@ function convertSeconds(s)
 function setup()
 {
 	createCanvas(800,600);
-	kirby = new Kirby();
-	fridgeObj = new Interactive(fridge,500,50, false, null);
-	tableObj = new Interactive(table, 500, 450, true, meat);
-	stoveObj = new Interactive(stove,400,50, true, pan);
+  kirby = new Kirby();
+  fridgeObj = new Interactive(fridge,500,50, false, null); 
+  tableObj = new Interactive(table, 500, 450, false, null);
+  stoveObj = new Interactive(stove,400,50, true, pan);
   sinkObj = new Interactive(sink,250,50, false, null);
   tomatoObj1 = new Interactive(tomato,100,320,true, tomato);
   tomatoObj2 = new Interactive(tomato,155,320,true, tomato);
