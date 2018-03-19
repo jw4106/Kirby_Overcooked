@@ -1,4 +1,4 @@
-let fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,pan,knife,map;
+let fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,pan,knife,map, placeholder;
 let kirby;
 
 let fridgeObj, stoveObj, tableObj;
@@ -25,7 +25,7 @@ function preload()
   pan = loadImage("assets/pan.png");
   knife = loadImage("assets/knife.png");
   sink = loadImage("assets/sink.png");
-
+	placeholder = loadImage("assets/swatch_light_gray.jpg");
 }
 
 class Kirby
@@ -285,14 +285,14 @@ function setup()
 	tableObj = new Interactive(table, 500, 450, true, meat);
 	stoveObj = new Interactive(stove,400,50, true, pan);
   sinkObj = new Interactive(sink,250,50, false, null);
-  tomatoObj1 = new Interactive(tomato,100,320,true, tomato);
-  tomatoObj2 = new Interactive(tomato,155,320,true, tomato);
-  tomatoObj3 = new Interactive(tomato,155,380,true, tomato);
-  tomatoObj4 = new Interactive(tomato,100,380,true, tomato);
-  cabbageObj1 = new Interactive(cabbage,100,450,true, cabbage);
-  cabbageObj2 = new Interactive(cabbage,155,450,true, cabbage);
-  cabbageObj3 = new Interactive(cabbage,155,510,true, cabbage);
-  cabbageObj4 = new Interactive(cabbage,100,510,true, cabbage);
+  tomatoObj1 = new Interactive(placeholder,100,320,true, tomato);
+  tomatoObj2 = new Interactive(placeholder,155,320,true, tomato);
+  tomatoObj3 = new Interactive(placeholder,155,380,true, tomato);
+  tomatoObj4 = new Interactive(placeholder,100,380,true, tomato);
+  cabbageObj1 = new Interactive(placeholder,100,450,true, cabbage);
+  cabbageObj2 = new Interactive(placeholder,155,450,true, cabbage);
+  cabbageObj3 = new Interactive(placeholder,155,510,true, cabbage);
+  cabbageObj4 = new Interactive(placeholder,100,510,true, cabbage);
 
 	//timer count down
 	function timeIt ()
