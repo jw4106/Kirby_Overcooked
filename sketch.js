@@ -288,7 +288,7 @@ function setup()
 {
 	createCanvas(800,600);
   kirby = new Kirby();
-  fridgeObj = new Interactive(fridge,500,50, false, null); 
+  fridgeObj = new Interactive(fridge,500,50, false, null);
   tableObj = new Interactive(table, 500, 450, false, null);
   stoveObj = new Interactive(stove,400,50, true, pan);
   sinkObj = new Interactive(sink,250,50, false, null);
