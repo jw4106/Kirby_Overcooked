@@ -162,13 +162,14 @@ class Kirby
 
 class Interactive
 {
-	constructor(sprite, x, y, hasObject, obj)
+	constructor(sprite, x, y, hasObject, obj, acceptedObj)
 	{
 		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
 		this.hasObject = hasObject;
 		this.obj = obj;
+		this.acceptedObj = acceptedObj;
 	}
 	//kapp collision
 	check(kirby)
@@ -218,12 +219,23 @@ class Interactive
 			}
 
 			//if kirby is holding something, drop it on the object.
-			if (kirby.holding)
+			if (kirby.holding && !this.hasObject)
 			{
 				if (keyIsDown(81))
 				{
-					this.hasObject = true;
-					this.obj = kirby.place();
+					if (this.acceptedObj !== null)
+					{
+						if (this.acceptedObj === true)
+						{
+							this.hasObject = true;
+							this.obj = kirby.place();
+						}
+						else if (kirby.obj === this.acceptedObj)
+						{
+							this.hasObject = true;
+							this.obj = kirby.place();
+						}
+					}
 				}
 			}
 			//if the table has an object, you can interact with it
@@ -274,6 +286,17 @@ class Interactive
 			}
 		}
 	}
+	action()
+	{
+		if (this.sprite === stove && this.obj === meat)
+		{
+			this.cook();
+		}
+		else if (this.sprite === tableWithKnife && (this.obj.sprite === cabbage || this.obj.sprite === tomato))
+		{
+			this.chop();
+		}
+	}
 }
 
 
@@ -292,28 +315,28 @@ function setup()
 {
 	createCanvas(800,600);
   kirby = new Kirby();
-  fridgeObj = new Interactive(fridge,500,50, false, null);
+  fridgeObj = new Interactive(fridge,500,50, false, null, null);
 
-  tableObj_left = new Interactive(tableleft, 590, 450, false, null);
-  tableObj_middle = new Interactive(tablemiddle, 630, 450, false, null);
-  tableObj_middle2 = new Interactive(tablemiddle, 665, 450, false, null);
-  tableObj_right = new Interactive(tableright, 700, 450, false, null);
+  tableObj_left = new Interactive(tableleft, 590, 450, false, null, true);
+  tableObj_middle = new Interactive(tablemiddle, 630, 450, false, null, true);
+  tableObj_middle2 = new Interactive(tablemiddle, 665, 450, false, null, true);
+  tableObj_right = new Interactive(tableright, 700, 450, false, null, true);
 
-  tableObj2_left = new Interactive(tableleft, 590, 310, false, null);
-  tableObj2_middle = new Interactive(tablemiddle, 630, 310, false, null);
-  tableObj2_middle2 = new Interactive(tablemiddle, 665, 310, false, null);
-  tableObj2_right = new Interactive(tableright, 700, 310, false, null);
+  tableObj2_left = new Interactive(tableleft, 590, 310, false, null, true);
+  tableObj2_middle = new Interactive(tablemiddle, 630, 310, false, null, true);
+  tableObj2_middle2 = new Interactive(tablemiddle, 665, 310, false, null, true);
+  tableObj2_right = new Interactive(tableright, 700, 310, false, null, true);
 
-  stoveObj = new Interactive(stove,400,50, false, null);
-  sinkObj = new Interactive(sink,250,50, false, null);
-  tomatoObj1 = new Interactive(placeholder,100,320,true, tomato);
-  tomatoObj2 = new Interactive(placeholder,155,320,true, tomato);
-  tomatoObj3 = new Interactive(placeholder,155,380,true, tomato);
-  tomatoObj4 = new Interactive(placeholder,100,380,true, tomato);
-  cabbageObj1 = new Interactive(placeholder,100,450,true, cabbage);
-  cabbageObj2 = new Interactive(placeholder,155,450,true, cabbage);
-  cabbageObj3 = new Interactive(placeholder,155,510,true, cabbage);
-  cabbageObj4 = new Interactive(placeholder,100,510,true, cabbage);
+  stoveObj = new Interactive(stove,400,50, false, null, meat);
+  sinkObj = new Interactive(sink,250,50, false, null, true);
+  tomatoObj1 = new Interactive(placeholder,100,320,true, tomato, true);
+  tomatoObj2 = new Interactive(placeholder,155,320,true, tomato, true);
+  tomatoObj3 = new Interactive(placeholder,155,380,true, tomato, true);
+  tomatoObj4 = new Interactive(placeholder,100,380,true, tomato, true);
+  cabbageObj1 = new Interactive(placeholder,100,450,true, cabbage, true);
+  cabbageObj2 = new Interactive(placeholder,155,450,true, cabbage, true);
+  cabbageObj3 = new Interactive(placeholder,155,510,true, cabbage, true);
+  cabbageObj4 = new Interactive(placeholder,100,510,true, cabbage, true);
 
 	//timer count down
 	function timeIt ()
@@ -338,7 +361,7 @@ function draw()
 	tableObj_middle.display();
 	tableObj_middle.check(kirby);
 	tableObj_middle2.display();
-	tableObj_middle2.check(kirby);	
+	tableObj_middle2.check(kirby);
 	tableObj_right.display();
 	tableObj_right.check(kirby);
 	tableObj2_left.display();
@@ -346,9 +369,9 @@ function draw()
 	tableObj2_middle.display();
 	tableObj2_middle.check(kirby);
 	tableObj2_middle2.display();
-	tableObj2_middle2.check(kirby);	
+	tableObj2_middle2.check(kirby);
 	tableObj2_right.display();
-	tableObj2_right.check(kirby);	
+	tableObj2_right.check(kirby);
 	stoveObj.display();
 	stoveObj.check(kirby);
   sinkObj.display();
