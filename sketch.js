@@ -292,10 +292,15 @@ class Interactive
 		{
 			this.cook();
 		}
-		else if (this.sprite === tableWithKnife && (this.obj.sprite === cabbage || this.obj.sprite === tomato))
-		{
-			this.chop();
-		}
+		//else if (this.sprite === tableWithKnife && (this.obj.sprite === cabbage || this.obj.sprite === tomato))
+		//{
+		//	this.chop();
+		//}
+	}
+	cook()
+	{
+		console.log("Cooking!");
+		this.obj = burger;
 	}
 }
 
@@ -317,9 +322,9 @@ function setup()
   kirby = new Kirby();
   fridgeObj = new Interactive(fridge,500,50, false, null, null);
 
-  tableObj_left = new Interactive(tableleft, 590, 450, false, null, true);
+  tableObj_left = new Interactive(tableleft, 590, 450, true, meat, true);
   tableObj_middle = new Interactive(tablemiddle, 630, 450, false, null, true);
-  tableObj_middle2 = new Interactive(tablemiddle, 665, 450, false, null, true);
+  tableObj_middle2 = new Interactive(tablemiddle, 665, 450, true, meat, true);
   tableObj_right = new Interactive(tableright, 700, 450, false, null, true);
 
   tableObj2_left = new Interactive(tableleft, 590, 310, false, null, true);
@@ -374,6 +379,7 @@ function draw()
 	tableObj2_right.check(kirby);
 	stoveObj.display();
 	stoveObj.check(kirby);
+	stoveObj.action();
   sinkObj.display();
 	sinkObj.check(kirby);
   tomato.resize(30, 38);
