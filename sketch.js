@@ -18,7 +18,9 @@ function preload()
   fridge = loadImage("assets/fridge.png");
   burger = loadGif("assets/burger.gif");
   meat = loadImage("assets/meat.png");
-  table = loadImage("assets/table.png");
+  tableleft = loadImage("assets/table_left.png");
+  tablemiddle = loadImage("assets/table_middle.png");
+  tableright = loadImage("assets/table_right.png");
   stove = loadImage("assets/stove.png");
   tomato = loadImage("assets/tomato.png");
   cabbage = loadImage("assets/veg.png");
@@ -138,7 +140,7 @@ class Kirby
 		image(this.state, this.xPos, this.yPos, 50,50);
 		if (this.holding)
 		{
-			image(this.obj, this.xPos+10, this.yPos - 25, 40, 40);
+			image(this.obj, this.xPos+10, this.yPos - 25, 30, 30);
 		}
 	}
 	pickUp(obj)
@@ -174,21 +176,23 @@ class Interactive
 		//checks the right side
 		//left, etc. for sprite and kirby
 		let spriteTop   = this.y;
-		let spriteBottom, spriteLeft, spriteRight;
-		if(this.sprite === stove || this.sprite === fridge || this.sprite === sink){
-			spriteBottom = this.y + this.sprite.height - 40;
-			spriteLeft = 0;
-			spriteRight = 800;
-		}
-		else{
-		    spriteLeft  = this.x;
-		    spriteRight = this.x + this.sprite.width;
-			spriteBottom = this.y + this.sprite.height;
-		}
+		let spriteBottom = this.y + this.sprite.height;
+		let spriteRight = this.x + this.sprite.width;
+		let spriteLeft  = this.x;
 		let kirbyRight = kirby.xPos + 50;
 		let kirbyLeft  = kirby.xPos;
 		let kirbyTop    = kirby.yPos;
 		let kirbyBottom = kirby.yPos + 50;
+		// if(this.sprite === stove || this.sprite === fridge || this.sprite === sink){
+		// 	spriteBottom = this.y + this.sprite.height;
+		// 	spriteLeft = 0;
+		// 	spriteRight = 800;
+		// }
+		// else{
+		//     spriteLeft  = this.x;
+		//     spriteRight = this.x + this.sprite.width;
+		// 	spriteBottom = this.y + this.sprite.height;
+		// }
 
 		if (spriteRight < kirbyLeft || spriteLeft > kirbyRight || spriteBottom < kirbyTop || spriteTop > kirbyBottom)
 		{
@@ -196,19 +200,19 @@ class Interactive
 		}
 		else
 		{
-			if (abs(kirbyTop - spriteBottom) <= 4)
+			if (abs(kirbyTop - spriteBottom) <= 5)
 			{
 				kirby.yPos = spriteBottom;
 			}
-			if (abs(kirbyBottom - spriteTop) <= 4)
+			if (abs(kirbyBottom - spriteTop) <= 5)
 			{
 				kirby.yPos = spriteTop - 50;
 			}
-			if (abs(kirbyRight - spriteLeft) <= 4)
+			if (abs(kirbyRight - spriteLeft) <= 5)
 			{
 				kirby.xPos = spriteLeft - 50;
 			}
-			if (abs(kirbyLeft - spriteRight) <= 4)
+			if (abs(kirbyLeft - spriteRight) <= 5)
 			{
 				kirby.xPos = spriteRight;
 			}
@@ -260,9 +264,9 @@ class Interactive
 		if (this.hasObject)
 		{
 			//hard coded the pan to work
-			if(this.obj === pan)
+			if(this.sprite === sink || this.sprite === fridge || this.sprite === stove)
 			{
-				image(this.obj, this.x, this.y+28, 40, 40);
+				image(this.obj, this.x+10, this.y+20, 30, 30);
 			}
 			else
 			{
@@ -289,8 +293,18 @@ function setup()
 	createCanvas(800,600);
   kirby = new Kirby();
   fridgeObj = new Interactive(fridge,500,50, false, null);
-  tableObj = new Interactive(table, 500, 450, false, null);
-  stoveObj = new Interactive(stove,400,50, true, pan);
+
+  tableObj_left = new Interactive(tableleft, 590, 450, false, null);
+  tableObj_middle = new Interactive(tablemiddle, 630, 450, false, null);
+  tableObj_middle2 = new Interactive(tablemiddle, 665, 450, false, null);
+  tableObj_right = new Interactive(tableright, 700, 450, false, null);
+
+  tableObj2_left = new Interactive(tableleft, 590, 310, false, null);
+  tableObj2_middle = new Interactive(tablemiddle, 630, 310, false, null);
+  tableObj2_middle2 = new Interactive(tablemiddle, 665, 310, false, null);
+  tableObj2_right = new Interactive(tableright, 700, 310, false, null);
+
+  stoveObj = new Interactive(stove,400,50, false, null);
   sinkObj = new Interactive(sink,250,50, false, null);
   tomatoObj1 = new Interactive(placeholder,100,320,true, tomato);
   tomatoObj2 = new Interactive(placeholder,155,320,true, tomato);
@@ -314,11 +328,27 @@ function setup()
 function draw()
 {
 	background(map);
+	textSize(32);
+	text(kirby.xPos+" "+kirby.yPos, 50,50)
 	kirby.move();
 	fridgeObj.display();
 	fridgeObj.check(kirby);
-	tableObj.display();
-	tableObj.check(kirby);
+	tableObj_left.display();
+	tableObj_left.check(kirby);
+	tableObj_middle.display();
+	tableObj_middle.check(kirby);
+	tableObj_middle2.display();
+	tableObj_middle2.check(kirby);	
+	tableObj_right.display();
+	tableObj_right.check(kirby);
+	tableObj2_left.display();
+	tableObj2_left.check(kirby);
+	tableObj2_middle.display();
+	tableObj2_middle.check(kirby);
+	tableObj2_middle2.display();
+	tableObj2_middle2.check(kirby);	
+	tableObj2_right.display();
+	tableObj2_right.check(kirby);	
 	stoveObj.display();
 	stoveObj.check(kirby);
   sinkObj.display();
