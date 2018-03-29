@@ -1,5 +1,5 @@
 let fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,pan,knife,map, placeholder;
-let kirby;
+let kirby, kirbyChef, kirbyChefObj;
 
 let fridgeObj, stoveObj, tableObj;
 
@@ -28,6 +28,7 @@ function preload()
   knife = loadImage("assets/knife.png");
   sink = loadImage("assets/sink.png");
 	placeholder = loadImage("assets/swatch_light_gray.jpg");
+	kirbyChef = loadGif("assets/resized.gif");
 }
 
 class Kirby
@@ -302,6 +303,11 @@ class Interactive
 		console.log("Cooking!");
 		this.obj = burger;
 	}
+	checkOrder()
+	{
+		console.log("checkOrder");
+	}
+		//if (this.obj)
 }
 
 
@@ -320,7 +326,11 @@ function setup()
 {
 	createCanvas(800,600);
   kirby = new Kirby();
+
+	kirbyChefObj = new Interactive(kirbyChef, 600, 50, false, null, true);
+
   fridgeObj = new Interactive(fridge,500,50, false, null, null);
+
 
   tableObj_left = new Interactive(tableleft, 590, 450, true, meat, true);
   tableObj_middle = new Interactive(tablemiddle, 630, 450, false, null, true);
@@ -359,8 +369,14 @@ function draw()
 	textSize(32);
 	text(kirby.xPos+" "+kirby.yPos, 50,50)
 	kirby.move();
+	kirbyChefObj.display();
+	kirbyChefObj.check(kirby);
+	kirbyChefObj.checkOrder();
+
 	fridgeObj.display();
 	fridgeObj.check(kirby);
+
+
 	tableObj_left.display();
 	tableObj_left.check(kirby);
 	tableObj_middle.display();
