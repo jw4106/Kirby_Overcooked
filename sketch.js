@@ -4,6 +4,7 @@ let kirby, kirbyChef, kirbyChefObj;
 let fridgeObj, stoveObj, tableObj;
 
 var counter=0;
+var cooktime = 0;
 var timeleft=90;
 
 function preload()
@@ -291,17 +292,25 @@ class Interactive
 	{
 		if (this.sprite === stove && this.obj === meat)
 		{
-			this.cook();
+			let counter = 0;
+			this.cook(counter);
 		}
 		//else if (this.sprite === tableWithKnife && (this.obj.sprite === cabbage || this.obj.sprite === tomato))
 		//{
 		//	this.chop();
 		//}
 	}
-	cook()
+	cook(counter)
 	{
-		console.log("Cooking!");
-		this.obj = burger;
+		textSize(16);
+		if(cooktime === 300){
+			this.obj = burger;
+			cooktime = 0;
+		}
+		else{
+			text(parseInt(cooktime/3)+"%", 415, 60);
+			cooktime++;
+		}
 	}
 	checkOrder()
 	{
@@ -366,8 +375,6 @@ function setup()
 function draw()
 {
 	background(map);
-	textSize(32);
-	text(kirby.xPos+" "+kirby.yPos, 50,50)
 	kirby.move();
 	kirbyChefObj.display();
 	kirbyChefObj.check(kirby);
