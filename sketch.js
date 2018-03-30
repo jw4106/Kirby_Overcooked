@@ -245,17 +245,24 @@ class Interactive
 			//if kirby is holding something, and object is a plate
 			if (kirby.holding && this.obj === plate)
 			{
-				if (keyIsDown(81))
+				if (keyIsDown(81) && !platehas.includes(kirby.obj) && kirby.obj !== meat)
 				{
-					if (platehas.length === 3)
-					{
-						this.hasObject = true;
-						this.obj = burger;
-					}
-					//you can put anything in so far...
-					else if(!platehas.includes(kirby.place())){
-						this.hasObject = true;
-						platehas.push(kirby.place());
+					if(kirby.place() === cookedmeat || kirby.place() === tomato || kirby.place() === cabbage){					
+						if (platehas.length === 2)
+						{
+							this.hasObject = true;
+							this.obj = burger;
+							platehas = [];
+						}
+						//you can put anything in so far...
+						else if(!platehas.includes(kirby.place())){
+							this.hasObject = true;
+							platehas.push(kirby.place());
+							console.log(platehas);
+						}
+						else{
+							kirby.obj = kirby.place()
+						}
 					}
 				}
 			}			
@@ -301,6 +308,20 @@ class Interactive
 			{
 				image(this.obj, this.x+10, this.y+20, 30, 30);
 			}
+			else if((this.sprite === table || this.sprite === tablemiddle || this.sprite === tableleft || this.sprite === tableright) && this.obj === plate){
+				image(this.obj, this.x, this.y, 30, 30);	
+				for(let i=0; i < platehas.length; i++){
+					if(platehas[i] === tomato){
+						image(platehas[i], this.x-7, this.y, 20, 20);
+					}
+					if(platehas[i] === cookedmeat){
+						image(platehas[i], this.x+3, this.y-10, 20, 20);
+					}
+					if(platehas[i] === cabbage){
+						image(platehas[i], this.x+13, this.y, 20, 20);
+					}
+				}
+			}
 			else
 			{
 				image(this.obj, this.x, this.y, 30, 30);
@@ -338,7 +359,7 @@ class Interactive
 	}
 	checkOrder()
 	{
-		console.log("checkOrder");
+		//console.log("checkOrder");
 	}
 		//if (this.obj)
 }
