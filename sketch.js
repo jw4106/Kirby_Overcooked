@@ -17,7 +17,10 @@ function preload()
 	kirby_stop_left = loadImage("assets/kirbystopleft.png");
 	map = loadImage("assets/map.jpg");
   fridge = loadImage("assets/fridge.png");
-  burger = loadImage("assets/burgerplate1.png");
+  knife = loadImage("assets/knife.png");
+  burger = loadImage("assets/burgerplate.png");
+  cuttomato = loadImage("assets/slicedtomato.png");
+  cutcabbage = loadImage("assets/slicedcabbage.png")
   cookedmeat = loadImage("assets/cooked_meat.png"); 
   submittable = loadImage("assets/submit.png");
   submitword = loadImage("assets/submitword.png");  
@@ -251,7 +254,7 @@ class Interactive
 				if (keyIsDown(81) && !platehas.includes(kirby.obj) && kirby.obj !== meat)
 				{
 					//plate only takes these things
-					if(kirby.place() === cookedmeat || kirby.place() === tomato || kirby.place() === cabbage){					
+					if(kirby.place() === cookedmeat || kirby.place() === cuttomato || kirby.place() === cutcabbage){					
 						//if plate has everything, turn to burger, empty platehas array
 						if (platehas.length === 2)
 						{
@@ -270,7 +273,19 @@ class Interactive
 						}
 					}
 				}
-			}			
+			}	
+			else if (kirby.obj === knife && (this.obj === cabbage || this.obj === tomato)){
+				if (keyIsDown(81)){
+					this.hasObject = true;
+					if(this.obj === cabbage){
+						this.obj = cutcabbage;
+					}
+					else if(this.obj === tomato){
+						this.obj = cuttomato
+					}
+					kirby.obj = knife;
+				}	
+			}		
 			//if the table has an object that is not a plate, you can interact with it
 			else if (this.hasObject)
 			{
@@ -308,24 +323,19 @@ class Interactive
 		image(this.sprite, this.x, this.y);
 		if (this.hasObject)
 		{
-			//hard coded the pan to work
-			if(this.sprite === sink || this.sprite === fridge || this.sprite === stove)
-			{
-				image(this.obj, this.x+10, this.y+20, 30, 30);
-			}
 			//if object is table, and holds a plate....
-			else if((this.sprite === table || this.sprite === tablemiddle || this.sprite === tableleft || this.sprite === tableright) && this.obj === plate){
+			if((this.sprite === table || this.sprite === tablemiddle || this.sprite === tableleft || this.sprite === tableright) && this.obj === plate){
 				image(this.obj, this.x, this.y, 30, 30);
 				//place ingredients based on platehas array	
 				for(let i=0; i < platehas.length; i++){
-					if(platehas[i] === tomato){
-						image(platehas[i], this.x-7, this.y, 20, 20);
+					if(platehas[i] === cuttomato){
+						image(platehas[i], this.x, this.y, 30, 30);
 					}
 					if(platehas[i] === cookedmeat){
-						image(platehas[i], this.x+3, this.y-10, 20, 20);
+						image(platehas[i], this.x, this.y-3, 30, 30);
 					}
-					if(platehas[i] === cabbage){
-						image(platehas[i], this.x+13, this.y, 20, 20);
+					if(platehas[i] === cutcabbage){
+						image(platehas[i], this.x, this.y-2, 30, 30);
 					}
 				}
 			}
@@ -392,17 +402,23 @@ function setup()
 
   fridgeObj = new Interactive(fridge,500,50, false, null, null);
 
-  submission = new Interactive(submittable, 650, 100, false, null, true);
-  submitwords = new Interactive(submitword, 650,160,false,null,false);
-  tableObj_left = new Interactive(tableleft, 590, 450, true, meat, true);
-  tableObj_middle = new Interactive(tablemiddle, 630, 450, false, null, true);
-  tableObj_middle2 = new Interactive(tablemiddle, 665, 450, true, meat, true);
-  tableObj_right = new Interactive(tableright, 700, 450, false, null, true);
+  submission = new Interactive(submittable, 650, 110, false, null, true);
+  submitwords = new Interactive(submitword, 650,50,false,null,false);
+
+  tableObj_left = new Interactive(tableleft, 590, 500, true, meat, true);
+  tableObj_middle = new Interactive(tablemiddle, 630, 500, true, meat, true);
+  tableObj_middle2 = new Interactive(tablemiddle, 665, 500, true, meat, true);
+  tableObj_right = new Interactive(tableright, 700, 500, true, meat, true);
 
   tableObj2_left = new Interactive(tableleft, 590, 310, false, null, true);
-  tableObj2_middle = new Interactive(tablemiddle, 630, 310, false, null, true);
+  tableObj2_middle = new Interactive(tablemiddle, 630, 310, true, plate, true);
   tableObj2_middle2 = new Interactive(tablemiddle, 665, 310, false, null, true);
   tableObj2_right = new Interactive(tableright, 700, 310, true, plate, true);
+
+  tableObj3_left = new Interactive(tableleft, 340, 500, false, null, true);
+  tableObj3_middle = new Interactive(tablemiddle, 380, 500, false, null, true);
+  tableObj3_middle2 = new Interactive(tablemiddle, 415, 500, true, knife, true);
+  tableObj3_right = new Interactive(tableright, 450, 500, false, null, true);
 
   stoveObj = new Interactive(stove,400,50, false, null, meat);
   sinkObj = new Interactive(sink,250,50, false, null, true);
@@ -455,6 +471,14 @@ function draw()
 	tableObj2_middle2.check(kirby);
 	tableObj2_right.display();
 	tableObj2_right.check(kirby);
+	tableObj3_left.display();
+	tableObj3_left.check(kirby);
+	tableObj3_middle.display();
+	tableObj3_middle.check(kirby);
+	tableObj3_middle2.display();
+	tableObj3_middle2.check(kirby);
+	tableObj3_right.display();
+	tableObj3_right.check(kirby);	
 	stoveObj.display();
 	stoveObj.check(kirby);
 	stoveObj.action();
