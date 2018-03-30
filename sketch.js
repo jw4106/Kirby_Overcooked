@@ -247,14 +247,16 @@ class Interactive
 			{
 				if (keyIsDown(81) && !platehas.includes(kirby.obj) && kirby.obj !== meat)
 				{
+					//plate only takes these things
 					if(kirby.place() === cookedmeat || kirby.place() === tomato || kirby.place() === cabbage){					
+						//if plate has everything, turn to burger, empty platehas array
 						if (platehas.length === 2)
 						{
 							this.hasObject = true;
 							this.obj = burger;
 							platehas = [];
 						}
-						//you can put anything in so far...
+						//push object to plate array
 						else if(!platehas.includes(kirby.place())){
 							this.hasObject = true;
 							platehas.push(kirby.place());
@@ -308,8 +310,10 @@ class Interactive
 			{
 				image(this.obj, this.x+10, this.y+20, 30, 30);
 			}
+			//if object is table, and holds a plate....
 			else if((this.sprite === table || this.sprite === tablemiddle || this.sprite === tableleft || this.sprite === tableright) && this.obj === plate){
-				image(this.obj, this.x, this.y, 30, 30);	
+				image(this.obj, this.x, this.y, 30, 30);
+				//place ingredients based on platehas array	
 				for(let i=0; i < platehas.length; i++){
 					if(platehas[i] === tomato){
 						image(platehas[i], this.x-7, this.y, 20, 20);
