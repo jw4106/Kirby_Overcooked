@@ -6,7 +6,7 @@ let fridgeObj, stoveObj, tableObj;
 var counter=0;
 var cooktime = 0;
 var timeleft=90;
-
+var platehas = [];
 function preload()
 {
 	kirby_run = loadGif("assets/kirbyrun.gif");
@@ -29,6 +29,7 @@ function preload()
   pan = loadImage("assets/pan.png");
   knife = loadImage("assets/knife.png");
   sink = loadImage("assets/sink.png");
+  plate = loadImage("assets/plate.png");
 	placeholder = loadImage("assets/swatch_light_gray.jpg");
 	kirbyChef = loadGif("assets/resized.gif");
 }
@@ -241,8 +242,25 @@ class Interactive
 					}
 				}
 			}
-			//if the table has an object, you can interact with it
-			if (this.hasObject)
+			//if kirby is holding something, and object is a plate
+			if (kirby.holding && this.obj === plate)
+			{
+				if (keyIsDown(81))
+				{
+					if (platehas.length === 3)
+					{
+						this.hasObject = true;
+						this.obj = burger;
+					}
+					//you can put anything in so far...
+					else if(!platehas.includes(kirby.place())){
+						this.hasObject = true;
+						platehas.push(kirby.place());
+					}
+				}
+			}			
+			//if the table has an object that is not a plate, you can interact with it
+			else if (this.hasObject)
 			{
 				//if kirby holding nothing
 				if (!kirby.holding)
@@ -292,6 +310,11 @@ class Interactive
 	action()
 	{
 		if (this.sprite === stove && this.obj === meat)
+		{
+			let counter = 0;
+			this.cook(counter);
+		}
+		if ((this.sprite === table || this.sprite === tablemiddle || this.sprite === tableright || this.sprite === tableleft) && this.obj === meat)
 		{
 			let counter = 0;
 			this.cook(counter);
@@ -350,7 +373,7 @@ function setup()
   tableObj2_left = new Interactive(tableleft, 590, 310, false, null, true);
   tableObj2_middle = new Interactive(tablemiddle, 630, 310, false, null, true);
   tableObj2_middle2 = new Interactive(tablemiddle, 665, 310, false, null, true);
-  tableObj2_right = new Interactive(tableright, 700, 310, false, null, true);
+  tableObj2_right = new Interactive(tableright, 700, 310, true, plate, true);
 
   stoveObj = new Interactive(stove,400,50, false, null, meat);
   sinkObj = new Interactive(sink,250,50, false, null, true);
