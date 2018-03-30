@@ -18,6 +18,7 @@ function preload()
 	map = loadImage("assets/map.jpg");
   fridge = loadImage("assets/fridge.png");
   burger = loadGif("assets/burger.gif");
+  cookedmeat = loadImage("assets/cooked_meat.png"); 
   meat = loadImage("assets/meat.png");
   tableleft = loadImage("assets/table_left.png");
   tablemiddle = loadImage("assets/table_middle.png");
@@ -304,7 +305,7 @@ class Interactive
 	{
 		textSize(16);
 		if(cooktime === 300){
-			this.obj = burger;
+			this.obj = cookedmeat;
 			cooktime = 0;
 		}
 		else{
