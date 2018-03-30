@@ -17,11 +17,14 @@ function preload()
 	kirby_stop_left = loadImage("assets/kirbystopleft.png");
 	map = loadImage("assets/map.jpg");
   fridge = loadImage("assets/fridge.png");
-  burger = loadGif("assets/burger.gif");
+  burger = loadImage("assets/burgerplate1.png");
   cookedmeat = loadImage("assets/cooked_meat.png"); 
+  submittable = loadImage("assets/submit.png");
+  submitword = loadImage("assets/submitword.png");  
   meat = loadImage("assets/meat.png");
   tableleft = loadImage("assets/table_left.png");
   tablemiddle = loadImage("assets/table_middle.png");
+  smoke = loadGif("assets/smoke.gif");
   tableright = loadImage("assets/table_right.png");
   stove = loadImage("assets/stove.png");
   tomato = loadImage("assets/tomato.png");
@@ -357,7 +360,7 @@ class Interactive
 			cooktime = 0;
 		}
 		else{
-			text(parseInt(cooktime/3)+"%", 415, 60);
+			image(smoke, 405, 35, 40, 40);
 			cooktime++;
 		}
 	}
@@ -389,7 +392,8 @@ function setup()
 
   fridgeObj = new Interactive(fridge,500,50, false, null, null);
 
-
+  submission = new Interactive(submittable, 650, 100, false, null, true);
+  submitwords = new Interactive(submitword, 650,160,false,null,false);
   tableObj_left = new Interactive(tableleft, 590, 450, true, meat, true);
   tableObj_middle = new Interactive(tablemiddle, 630, 450, false, null, true);
   tableObj_middle2 = new Interactive(tablemiddle, 665, 450, true, meat, true);
@@ -432,7 +436,9 @@ function draw()
 	fridgeObj.display();
 	fridgeObj.check(kirby);
 
-
+	submission.display();
+	submission.check(kirby);
+	submitwords.display();
 	tableObj_left.display();
 	tableObj_left.check(kirby);
 	tableObj_middle.display();
