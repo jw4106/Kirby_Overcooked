@@ -18,12 +18,12 @@ function preload()
 	map = loadImage("assets/map.jpg");
   fridge = loadImage("assets/fridge.png");
   knife = loadImage("assets/knife.png");
-  burger = loadImage("assets/burgerplate.png");
+  burger = loadImage("assets/burgerplate1.png");
   cuttomato = loadImage("assets/slicedtomato.png");
   cutcabbage = loadImage("assets/slicedcabbage.png")
-  cookedmeat = loadImage("assets/cooked_meat.png"); 
+  cookedmeat = loadImage("assets/cooked_meat.png");
   submittable = loadImage("assets/submit.png");
-  submitword = loadImage("assets/submitword.png");  
+  submitword = loadImage("assets/submitword.png");
   meat = loadImage("assets/meat.png");
   tableleft = loadImage("assets/table_left.png");
   tablemiddle = loadImage("assets/table_middle.png");
@@ -150,7 +150,13 @@ class Kirby
 		image(this.state, this.xPos, this.yPos, 50,50);
 		if (this.holding)
 		{
-			image(this.obj, this.xPos+10, this.yPos - 25, 30, 30);
+			if (this.obj === burger)
+			{
+				image(this.obj, this.xPos+10, this.yPos-25, 40, 40);
+			}
+			else {
+				image(this.obj, this.xPos+10, this.yPos - 25, 30, 30);
+			}
 		}
 	}
 	pickUp(obj)
@@ -254,7 +260,7 @@ class Interactive
 				if (keyIsDown(81) && !platehas.includes(kirby.obj) && kirby.obj !== meat)
 				{
 					//plate only takes these things
-					if(kirby.place() === cookedmeat || kirby.place() === cuttomato || kirby.place() === cutcabbage){					
+					if(kirby.place() === cookedmeat || kirby.place() === cuttomato || kirby.place() === cutcabbage){
 						//if plate has everything, turn to burger, empty platehas array
 						if (platehas.length === 2)
 						{
@@ -266,14 +272,14 @@ class Interactive
 						else if(!platehas.includes(kirby.place())){
 							this.hasObject = true;
 							platehas.push(kirby.place());
-							console.log(platehas);
+							//console.log(platehas);
 						}
 						else{
 							kirby.obj = kirby.place()
 						}
 					}
 				}
-			}	
+			}
 			else if (kirby.obj === knife && (this.obj === cabbage || this.obj === tomato)){
 				if (keyIsDown(81)){
 					this.hasObject = true;
@@ -284,8 +290,8 @@ class Interactive
 						this.obj = cuttomato
 					}
 					kirby.obj = knife;
-				}	
-			}		
+				}
+			}
 			//if the table has an object that is not a plate, you can interact with it
 			else if (this.hasObject)
 			{
@@ -324,9 +330,17 @@ class Interactive
 		if (this.hasObject)
 		{
 			//if object is table, and holds a plate....
-			if((this.sprite === table || this.sprite === tablemiddle || this.sprite === tableleft || this.sprite === tableright) && this.obj === plate){
-				image(this.obj, this.x, this.y, 30, 30);
-				//place ingredients based on platehas array	
+			if((this.sprite === table || this.sprite === tablemiddle || this.sprite === tableleft || this.sprite === tableright) && this.obj === plate)
+			{
+				if (this.obj === burger)
+				{
+					image(this.obj, this.x-5, this.y-7, 40, 40);
+				}
+				else
+				{
+					image(this.obj, this.x, this.y, 30, 30);
+				}
+				//place ingredients based on platehas array
 				for(let i=0; i < platehas.length; i++){
 					if(platehas[i] === cuttomato){
 						image(platehas[i], this.x, this.y, 30, 30);
@@ -341,7 +355,14 @@ class Interactive
 			}
 			else
 			{
-				image(this.obj, this.x, this.y, 30, 30);
+				if (this.obj === burger)
+				{
+					image(this.obj, this.x-5, this.y-7, 40, 40);
+				}
+				else
+				{
+					image(this.obj, this.x, this.y, 30, 30);
+				}
 			}
 		}
 	}
@@ -370,7 +391,7 @@ class Interactive
 			cooktime = 0;
 		}
 		else{
-			image(smoke, 405, 35, 40, 40);
+			image(smoke, 405, 35, 60, 60);
 			cooktime++;
 		}
 	}
@@ -413,7 +434,7 @@ function setup()
   tableObj2_left = new Interactive(tableleft, 590, 310, false, null, true);
   tableObj2_middle = new Interactive(tablemiddle, 630, 310, true, plate, true);
   tableObj2_middle2 = new Interactive(tablemiddle, 665, 310, false, null, true);
-  tableObj2_right = new Interactive(tableright, 700, 310, true, plate, true);
+  tableObj2_right = new Interactive(tableright, 700, 310, false, null, true);
 
   tableObj3_left = new Interactive(tableleft, 340, 500, false, null, true);
   tableObj3_middle = new Interactive(tablemiddle, 380, 500, false, null, true);
@@ -452,6 +473,7 @@ function draw()
 	fridgeObj.display();
 	fridgeObj.check(kirby);
 
+	//this is aggressive
 	submission.display();
 	submission.check(kirby);
 	submitwords.display();
@@ -478,7 +500,7 @@ function draw()
 	tableObj3_middle2.display();
 	tableObj3_middle2.check(kirby);
 	tableObj3_right.display();
-	tableObj3_right.check(kirby);	
+	tableObj3_right.check(kirby);
 	stoveObj.display();
 	stoveObj.check(kirby);
 	stoveObj.action();
