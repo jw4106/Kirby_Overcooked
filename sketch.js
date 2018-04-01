@@ -1,11 +1,12 @@
 let fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,pan,knife,map, placeholder;
 let kirby, kirbyChef, kirbyChefObj;
 
-let fridgeObj, stoveObj, tableObj;
+let fridgeObj, stoveObj, tableObj, order;
+let font, state;
 
 var counter=0;
 var cooktime = 0;
-var timeleft=90;
+var timeleft=200;
 var platehas = [];
 function preload()
 {
@@ -38,6 +39,8 @@ function preload()
   plate = loadImage("assets/plate.png");
 	placeholder = loadImage("assets/swatch_light_gray.jpg");
 	kirbyChef = loadGif("assets/resized.gif");
+	order = loadImage("assets/order.png");
+	font = loadFont('assets/KirbyClassic.ttf');
 }
 
 class Kirby
@@ -382,6 +385,10 @@ class Interactive
 		//{
 		//	this.chop();
 		//}
+		if (this.sprite === submittable && this.obj === burgerplate1)
+		{
+
+		}
 	}
 	cook(counter)
 	{
@@ -452,6 +459,7 @@ function setup()
   cabbageObj3 = new Interactive(placeholder,155,510,true, cabbage, true);
   cabbageObj4 = new Interactive(placeholder,100,510,true, cabbage, true);
 
+	state = 1;
 	//timer count down
 	function timeIt ()
 	{
@@ -464,66 +472,85 @@ function setup()
 
 function draw()
 {
-	background(map);
-	kirby.move();
-	kirbyChefObj.display();
-	kirbyChefObj.check(kirby);
-	kirbyChefObj.checkOrder();
+	if (state === 0)
+	{
+		console.log("start");
+	}
+	else if (state === 1)
+	{
+		background(map);
+		kirby.move();
+		kirbyChefObj.display();
+		kirbyChefObj.check(kirby);
+		kirbyChefObj.checkOrder();
 
-	fridgeObj.display();
-	fridgeObj.check(kirby);
+		fridgeObj.display();
+		fridgeObj.check(kirby);
 
-	//this is aggressive
-	submission.display();
-	submission.check(kirby);
-	submitwords.display();
-	tableObj_left.display();
-	tableObj_left.check(kirby);
-	tableObj_middle.display();
-	tableObj_middle.check(kirby);
-	tableObj_middle2.display();
-	tableObj_middle2.check(kirby);
-	tableObj_right.display();
-	tableObj_right.check(kirby);
-	tableObj2_left.display();
-	tableObj2_left.check(kirby);
-	tableObj2_middle.display();
-	tableObj2_middle.check(kirby);
-	tableObj2_middle2.display();
-	tableObj2_middle2.check(kirby);
-	tableObj2_right.display();
-	tableObj2_right.check(kirby);
-	tableObj3_left.display();
-	tableObj3_left.check(kirby);
-	tableObj3_middle.display();
-	tableObj3_middle.check(kirby);
-	tableObj3_middle2.display();
-	tableObj3_middle2.check(kirby);
-	tableObj3_right.display();
-	tableObj3_right.check(kirby);
-	stoveObj.display();
-	stoveObj.check(kirby);
-	stoveObj.action();
-  sinkObj.display();
-	sinkObj.check(kirby);
-  tomato.resize(30, 38);
-  tomatoObj1.display();
-	tomatoObj1.check(kirby);
-  tomatoObj2.display();
-	tomatoObj2.check(kirby);
-  tomatoObj3.display();
-	tomatoObj3.check(kirby);
-  tomatoObj4.display();
-	tomatoObj4.check(kirby);
-  cabbage.resize(30, 38);
-  cabbageObj1.display();
-	cabbageObj1.check(kirby);
-  cabbageObj2.display();
-	cabbageObj2.check(kirby);
-  cabbageObj3.display();
-	cabbageObj3.check(kirby);
-  cabbageObj4.display();
-	cabbageObj4.check(kirby);
-	kirby.display();
-  text("Time left: " + convertSeconds(timeleft-counter), 50, 70);
+		//this is aggressive
+		submission.display();
+		submission.check(kirby);
+		submitwords.display();
+		tableObj_left.display();
+		tableObj_left.check(kirby);
+		tableObj_middle.display();
+		tableObj_middle.check(kirby);
+		tableObj_middle2.display();
+		tableObj_middle2.check(kirby);
+		tableObj_right.display();
+		tableObj_right.check(kirby);
+		tableObj2_left.display();
+		tableObj2_left.check(kirby);
+		tableObj2_middle.display();
+		tableObj2_middle.check(kirby);
+		tableObj2_middle2.display();
+		tableObj2_middle2.check(kirby);
+		tableObj2_right.display();
+		tableObj2_right.check(kirby);
+		tableObj3_left.display();
+		tableObj3_left.check(kirby);
+		tableObj3_middle.display();
+		tableObj3_middle.check(kirby);
+		tableObj3_middle2.display();
+		tableObj3_middle2.check(kirby);
+		tableObj3_right.display();
+		tableObj3_right.check(kirby);
+		stoveObj.display();
+		stoveObj.check(kirby);
+		stoveObj.action();
+	  sinkObj.display();
+		sinkObj.check(kirby);
+	  tomato.resize(30, 38);
+	  tomatoObj1.display();
+		tomatoObj1.check(kirby);
+	  tomatoObj2.display();
+		tomatoObj2.check(kirby);
+	  tomatoObj3.display();
+		tomatoObj3.check(kirby);
+	  tomatoObj4.display();
+		tomatoObj4.check(kirby);
+	  cabbage.resize(30, 38);
+	  cabbageObj1.display();
+		cabbageObj1.check(kirby);
+	  cabbageObj2.display();
+		cabbageObj2.check(kirby);
+	  cabbageObj3.display();
+		cabbageObj3.check(kirby);
+	  cabbageObj4.display();
+		cabbageObj4.check(kirby);
+		kirby.display();
+		textFont(font, 14);
+		text("Kirby's Burger Recipe:", 10, 60)
+		image(order, 165, 10, 90, 90);
+		textFont(font, 25);
+	  text("Time left: " + convertSeconds(timeleft-counter), 300, 50);
+		if (timeleft-counter < 0)
+		{
+			state = 2;
+		}
+	}
+	else if (state === 2)
+	{
+		console.log("gameover");
+	}
 }
