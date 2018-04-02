@@ -8,6 +8,7 @@ var counter=0;
 var cooktime = 0;
 var timeleft=200;
 var platehas = [];
+var score = 0;
 function preload()
 {
 	kirby_run = loadGif("assets/kirbyrun.gif");
@@ -153,7 +154,23 @@ class Kirby
 		image(this.state, this.xPos, this.yPos, 50,50);
 		if (this.holding)
 		{
-			if (this.obj === burger)
+			if(this.obj === plate)
+			{
+				//place ingredients based on platehas array
+				image(this.obj, this.xPos+10, this.yPos-25, 30, 30);
+				for(let i=0; i < platehas.length; i++){
+					if(platehas[i] === cuttomato){
+						image(platehas[i], this.xPos+10, this.yPos-25, 30, 30);
+					}
+					if(platehas[i] === cookedmeat){
+						image(platehas[i], this.xPos+10, this.yPos-28, 30, 30);
+					}
+					if(platehas[i] === cutcabbage){
+						image(platehas[i], this.xPos+10, this.yPos-27, 30, 30);
+					}
+				}
+			}
+			else if (this.obj === burger)
 			{
 				image(this.obj, this.xPos+10, this.yPos-25, 40, 40);
 			}
@@ -332,8 +349,13 @@ class Interactive
 		image(this.sprite, this.x, this.y);
 		if (this.hasObject)
 		{
+			if(this.sprite === submittable && this.obj === burger){
+					image(plate, this.x, this.y, 30, 30);
+					this.obj = plate;
+					score += 50;
+			}
 			//if object is table, and holds a plate....
-			if((this.sprite === table || this.sprite === tablemiddle || this.sprite === tableleft || this.sprite === tableright) && this.obj === plate)
+			else if((this.sprite === table || this.sprite === tablemiddle || this.sprite === tableleft || this.sprite === tableright) && this.obj === plate)
 			{
 				if (this.obj === burger)
 				{
@@ -544,6 +566,7 @@ function draw()
 		image(order, 165, 10, 90, 90);
 		textFont(font, 25);
 	  text("Time left: " + convertSeconds(timeleft-counter), 300, 50);
+	  text("Score: " + score, 300, 25);
 		if (timeleft-counter < 0)
 		{
 			state = 2;
