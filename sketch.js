@@ -2,11 +2,11 @@ let fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,pan,kn
 let kirby, kirbyChef, kirbyChefObj;
 
 let fridgeObj, stoveObj, tableObj, order;
-let font, state, starty, bgMusic;
+let font, state, starty, bgMusic, bye, pickupsound, dropsound;
 
 //timer variable
 var counter=0;
-//length of cooking meat 
+//length of cooking meat
 var cooktime = 0;
 var timeleft=150;
 //plate object array
@@ -17,7 +17,7 @@ var tflyy = 220;
 
 function preload()
 {
-	//load every single asset we have such as sound, gifs and images. 
+	//load every single asset we have such as sound, gifs and images.
 	kirby_run = loadGif("assets/kirbyrun.gif");
 	kirby_run_left = loadGif("assets/kirbyrunleft.gif");
 	kirby_move = loadGif("assets/kirbymove.gif");
@@ -50,18 +50,23 @@ function preload()
 	order = loadImage("assets/order.png");
 	font = loadFont('assets/KirbyClassic.ttf');
 	starty = loadImage("assets/startscreen.png");
-	soundFormats("mp3", "m4a");
-	bgMusic = loadSound("sounds/newbgmusic.m4a");
+	soundFormats("mp3", "m4a", "wav");
+	bgMusic = loadSound("sounds/newbgmusic.wav");
 	cookMusic = loadSound("sounds/cooking.mp3");
 	submitMusic = loadSound("sounds/submitmusic.mp3");
 	goldstar = loadImage("assets/goldstar.png");
 	kirbyfly = loadGif("assets/kirbyfly.gif");
 	kirbyfly_flip = loadGif("assets/kirbyfly_flip.gif");
+	bye = loadImage("assets/gameover.png");
+	pickupsound = loadSound("sounds/pickup.mp3");
+	dropsound = loadSound("sounds/drop.mp3");
+
+
 }
 
 class Kirby
 {
-	//holds the xposition, yposition and states of kirby for movement and holding objects 
+	//holds the xposition, yposition and states of kirby for movement and holding objects
 	constructor()
 	{
 		this.xPos = 400;
@@ -166,7 +171,7 @@ class Kirby
 			}
 		}
 	}
-	//displays the object that kirby is holding 
+	//displays the object that kirby is holding
 	display()
 	{
 		image(this.state, this.xPos, this.yPos, 50,50);
@@ -278,11 +283,19 @@ class Interactive
 					{
 						if (this.acceptedObj === true)
 						{
+							if(!dropsound.isPlaying())
+							{
+								dropsound.play();
+							}
 							this.hasObject = true;
 							this.obj = kirby.place();
 						}
 						else if (kirby.obj === this.acceptedObj)
 						{
+							if(!dropsound.isPlaying())
+							{
+								dropsound.play();
+							}
 							this.hasObject = true;
 							this.obj = kirby.place();
 						}
@@ -299,24 +312,43 @@ class Interactive
 						//if plate has everything, turn to burger, empty platehas array
 						if (platehas.length === 2)
 						{
+							if(!dropsound.isPlaying())
+							{
+								dropsound.play();
+							}
 							this.hasObject = true;
 							this.obj = burger;
 							platehas = [];
 						}
 						//push object to plate array
-						else if(!platehas.includes(kirby.place())){
+						else if(!platehas.includes(kirby.place()))
+						{
+							if(!dropsound.isPlaying())
+							{
+								dropsound.play();
+							}
 							this.hasObject = true;
 							platehas.push(kirby.place());
 							//console.log(platehas);
 						}
-						else{
+						else
+						{
+							if(!dropsound.isPlaying())
+							{
+								dropsound.play();
+							}
 							kirby.obj = kirby.place()
 						}
 					}
 				}
 			}
 			else if (kirby.obj === knife && (this.obj === cabbage || this.obj === tomato)){
-				if (keyIsDown(81)){
+				if (keyIsDown(81))
+				{
+					if(!dropsound.isPlaying())
+					{
+						dropsound.play();
+					}
 					this.hasObject = true;
 					if(this.obj === cabbage){
 						this.obj = cutcabbage;
@@ -337,21 +369,37 @@ class Interactive
 					//key 32 is spacebar for picking up
 					if (abs(kirbyTop - spriteBottom) < 10 && keyIsDown(32))
 					{
+						if (!pickupsound.isPlaying())
+						{
+							pickupsound.play();
+						}
 						kirby.pickUp(this.obj);
 						this.hasObject = false;
 					}
 					if (abs(kirbyBottom - spriteTop) < 10 && keyIsDown(32))
 					{
+						if (!pickupsound.isPlaying())
+						{
+							pickupsound.play();
+						}
 						kirby.pickUp(this.obj);
 						this.hasObject = false;
 					}
 					if (abs(kirbyRight - spriteLeft) < 10 && keyIsDown(32))
 					{
+						if (!pickupsound.isPlaying())
+						{
+							pickupsound.play();
+						}
 						kirby.pickUp(this.obj);
 						this.hasObject = false;
 					}
 					if (abs(kirbyLeft - spriteRight) < 10 && keyIsDown(32))
 					{
+						if (!pickupsound.isPlaying())
+						{
+							pickupsound.play();
+						}
 						kirby.pickUp(this.obj);
 						this.hasObject = false;
 					}
@@ -400,7 +448,7 @@ class Interactive
 			}
 			else
 			{
-				//scaling display for burger 
+				//scaling display for burger
 				if (this.obj === burger)
 				{
 					image(this.obj, this.x-5, this.y-7, 40, 40);
@@ -418,7 +466,10 @@ class Interactive
 		if (this.sprite === stove && this.obj === meat)
 		{
 			let counter = 0;
-			cookMusic.play();
+			if (!cookMusic.isPlaying())
+			{
+				cookMusic.play();
+			}
 			this.cook(counter);
 		}
 		if ((this.sprite === table || this.sprite === tablemiddle || this.sprite === tableright || this.sprite === tableleft) && this.obj === meat)
@@ -433,7 +484,7 @@ class Interactive
 		if(cooktime === 300){
 			this.obj = cookedmeat;
 			cooktime = 0;
-			cookMusic.stop();
+			//cookMusic.stop();
 		}
 		else{
 			image(smoke, 405, 35, 60, 60);
@@ -455,7 +506,7 @@ function setup()
 {
 	createCanvas(800,600);
 	kirby = new Kirby();
-	//initialize everything! 
+	//initialize everything!
 	fridgeObj = new Interactive(fridge,500,50, false, null, null);
 
 	submission = new Interactive(submittable, 650, 110, false, null, true);
@@ -486,7 +537,7 @@ function setup()
 	cabbageObj2 = new Interactive(placeholder,155,450,true, cabbage, true);
 	cabbageObj3 = new Interactive(placeholder,155,510,true, cabbage, true);
 	cabbageObj4 = new Interactive(placeholder,100,510,true, cabbage, true);
-	bgMusic.play();
+	bgMusic.loop();
 	state = 0;
 	//timer count down
 	function timeIt ()
@@ -588,7 +639,7 @@ function draw()
 	//game over screen
 	else if (state === 2)
 	{
-		background(starty);
+		background(bye);
 		textFont(font, 15);
 		if(score < 100){
 		}
@@ -612,7 +663,7 @@ function draw()
 		image(kirbyfly, 0, flyy, 200,200);
 		image(kirbyfly_flip, 610, flyy, 200,200);
 		textFont(font, 18);
-		text("Thanks for Playing!!! ", 25, tflyy);
+		text("We did it!!!", 25, tflyy);
 		text("We hope you had fun!!!", 610, tflyy);
 		flyy++;
 		tflyy++;
