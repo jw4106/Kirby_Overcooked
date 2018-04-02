@@ -11,7 +11,7 @@ var cooktime = 0;
 var timeleft=150;
 //plate object array
 var platehas = [];
-var score = 300;
+var score = 0;
 var flyy = 0;
 var tflyy = 220;
 
@@ -56,6 +56,7 @@ function preload()
 	submitMusic = loadSound("sounds/submitmusic.mp3");
 	goldstar = loadImage("assets/goldstar.png");
 	kirbyfly = loadGif("assets/kirbyfly.gif");
+	kirbyfly_flip = loadGif("assets/kirbyfly_flip.gif");
 }
 
 class Kirby
@@ -579,7 +580,7 @@ function draw()
 		textFont(font, 25);
 		text("Time left: " + convertSeconds(timeleft-counter), 300, 50);
 		text("Score: " + score, 300, 25);
-		if (timeleft-counter < 148)
+		if (timeleft-counter < 0)
 		{
 			state = 2;
 		}
@@ -609,8 +610,10 @@ function draw()
 		textFont(font, 25);
 		text("Score: " + score, 330, 575);
 		image(kirbyfly, 0, flyy, 200,200);
-		textFont(font, 15);
+		image(kirbyfly_flip, 610, flyy, 200,200);
+		textFont(font, 18);
 		text("Thanks for Playing!!! ", 25, tflyy);
+		text("We hope you had fun!!!", 610, tflyy);
 		flyy++;
 		tflyy++;
 		if (keyIsDown(32))
