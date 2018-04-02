@@ -11,7 +11,9 @@ var cooktime = 0;
 var timeleft=150;
 //plate object array
 var platehas = [];
-var score = 0;
+var score = 300;
+var flyy = 0;
+var tflyy = 220;
 
 function preload()
 {
@@ -52,7 +54,8 @@ function preload()
 	bgMusic = loadSound("sounds/newbgmusic.m4a");
 	cookMusic = loadSound("sounds/cooking.mp3");
 	submitMusic = loadSound("sounds/submitmusic.mp3");
-
+	goldstar = loadImage("assets/goldstar.png");
+	kirbyfly = loadGif("assets/kirbyfly.gif");
 }
 
 class Kirby
@@ -288,7 +291,7 @@ class Interactive
 			//if kirby is holding something, and object is a plate
 			if (kirby.holding && this.obj === plate)
 			{
-				if (keyIsDown(81) && !platehas.includes(kirby.obj) && kirby.obj !== meat)
+				if (keyIsDown(81) && !platehas.includes(kirby.obj) && kirby.obj !== meat && kirby.obj !== tomato && kirby.obj !== cabbage && kirby.obj !== knife)
 				{
 					//plate only takes these things
 					if(kirby.place() === cookedmeat || kirby.place() === cuttomato || kirby.place() === cutcabbage){
@@ -576,7 +579,7 @@ function draw()
 		textFont(font, 25);
 		text("Time left: " + convertSeconds(timeleft-counter), 300, 50);
 		text("Score: " + score, 300, 25);
-		if (timeleft-counter < 0)
+		if (timeleft-counter < 148)
 		{
 			state = 2;
 		}
@@ -585,14 +588,39 @@ function draw()
 	else if (state === 2)
 	{
 		background(starty);
+		textFont(font, 15);
+		if(score < 100){
+		}
+		else if(score >= 100 && score < 150){
+			image(goldstar,375,480, 50, 50);
+			text("Nice Try!", 370, 550);
+		}
+		else if(score >= 150 && score < 200){
+			image(goldstar,340,480, 50, 50);
+			image(goldstar,410,480, 50, 50);
+			text("Wonderful!!", 370, 550);
+		}
+		else{
+			image(goldstar,320,480, 50, 50);
+			image(goldstar,370,480, 50, 50);
+			image(goldstar,420,480, 50, 50);
+			text("Perfect", 370, 550);
+		}
 		textFont(font, 25);
-		text("Score: " + score, 325, 550);
+		text("Score: " + score, 330, 575);
+		image(kirbyfly, 0, flyy, 200,200);
+		textFont(font, 15);
+		text("Thanks for Playing!!! ", 25, tflyy);
+		flyy++;
+		tflyy++;
 		if (keyIsDown(32))
 		{
 			state = 1;
 			timeleft = 150;
 			counter = 0;
 			score = 0;
+			flyy = 0;
+			tflyy = 220;
 		}
 	}
 }
