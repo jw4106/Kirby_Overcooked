@@ -2,11 +2,11 @@ let fridge,burger,meat,kirby_move, kirby_stop, stove,table,tomato,cabbage,pan,kn
 let kirby, kirbyChef, kirbyChefObj;
 
 let fridgeObj, stoveObj, tableObj, order;
-let font, state;
+let font, state, starty, bgMusic;
 
 var counter=0;
 var cooktime = 0;
-var timeleft=200;
+var timeleft=150;
 var platehas = [];
 var score = 0;
 function preload()
@@ -42,6 +42,10 @@ function preload()
 	kirbyChef = loadGif("assets/resized.gif");
 	order = loadImage("assets/order.png");
 	font = loadFont('assets/KirbyClassic.ttf');
+	starty = loadImage("assets/startscreen.png");
+	soundFormats("mp3", "m4a");
+	bgMusic = loadSound("sounds/newbgmusic.m4a");
+
 }
 
 class Kirby
@@ -463,12 +467,12 @@ function setup()
   tableObj2_left = new Interactive(tableleft, 590, 310, false, null, true);
   tableObj2_middle = new Interactive(tablemiddle, 630, 310, true, plate, true);
   tableObj2_middle2 = new Interactive(tablemiddle, 665, 310, false, null, true);
-  tableObj2_right = new Interactive(tableright, 700, 310, false, null, true);
+  tableObj2_right = new Interactive(tableright, 700, 310, true, meat, true);
 
   tableObj3_left = new Interactive(tableleft, 340, 500, false, null, true);
-  tableObj3_middle = new Interactive(tablemiddle, 380, 500, false, null, true);
+  tableObj3_middle = new Interactive(tablemiddle, 380, 500, true, tomato, true);
   tableObj3_middle2 = new Interactive(tablemiddle, 415, 500, true, knife, true);
-  tableObj3_right = new Interactive(tableright, 450, 500, false, null, true);
+  tableObj3_right = new Interactive(tableright, 450, 500, true, cabbage, true);
 
   stoveObj = new Interactive(stove,400,50, false, null, meat);
   sinkObj = new Interactive(sink,250,50, false, null, true);
@@ -480,8 +484,8 @@ function setup()
   cabbageObj2 = new Interactive(placeholder,155,450,true, cabbage, true);
   cabbageObj3 = new Interactive(placeholder,155,510,true, cabbage, true);
   cabbageObj4 = new Interactive(placeholder,100,510,true, cabbage, true);
-
-	state = 1;
+	bgMusic.play();
+	state = 0;
 	//timer count down
 	function timeIt ()
 	{
@@ -494,9 +498,16 @@ function setup()
 
 function draw()
 {
+	console.log(state);
 	if (state === 0)
 	{
-		console.log("start");
+		background(starty);
+		if (keyIsDown(32))
+		{
+			state = 1;
+			timeleft = 150;
+			counter = 0;
+		}
 	}
 	else if (state === 1)
 	{
@@ -574,6 +585,15 @@ function draw()
 	}
 	else if (state === 2)
 	{
-		console.log("gameover");
+		background(starty);
+		textFont(font, 25);
+		text("Score: " + score, 325, 550);
+		if (keyIsDown(32))
+		{
+			state = 1;
+			timeleft = 150;
+			counter = 0;
+			score = 0;
+		}
 	}
 }
